@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# Copyright (C) 2002-2008  Jean Delvare <khali@linux-fr.org>
+# Copyright (C) 2002-2008  Jean Delvare <jdelvare@suse.de>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 # Please note that this is a guess-only work.  Sony support refused to help
 # me, so if someone can provide information, please contact me.
 # My knowledge is summarized on this page:
-# http://khali.linux-fr.org/vaio/eeprom.html
+# http://jdelvare.nerim.net/articles/vaio/eeprom.html
 #
 # It seems that if present, the EEPROM is always at 0x57.
 #
