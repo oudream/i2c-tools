@@ -1,9 +1,9 @@
 #!/usr/bin/perl -w
 #
-# Copyright (C) 2004-2005  Jean Delvare <jdelvare@suse.de>
+# Copyright (C) 2004-2008  Jean Delvare <jdelvare@suse.de>
 #
 # Parts inspired from decode-edid.
-# Copyright (C) 2003-2004  Jean Delvare <jdelvare@suse.de>
+# Copyright (C) 2003-2004  Jean Delvare
 #
 # Parts inspired from the ddcmon driver and sensors' print_ddcmon function.
 # Copyright (C) 1998-2004  Mark D. Studebaker
@@ -25,8 +25,6 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #    MA 02110-1301 USA.
-#
-# Copyright (C) 2005-2008  Jean Delvare <jdelvare@suse.de>
 #
 # This script is a replacement for the now deprecated ddcmon kernel driver.
 # Instead of having a dedicated driver, it is better to reuse the standard
