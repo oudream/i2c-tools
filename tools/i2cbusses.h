@@ -1,7 +1,7 @@
 /*
     i2cbusses.h - Part of the i2c-tools package
 
-    Copyright (C) 2004-2010  Jean Delvare <khali@linux-fr.org>
+    Copyright (C) 2004-2010  Jean Delvare <jdelvare@suse.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

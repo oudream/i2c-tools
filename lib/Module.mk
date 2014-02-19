@@ -1,6 +1,6 @@
 # I2C library for Linux
 #
-# Copyright (C) 2012  Jean Delvare <khali@linux-fr.org>
+# Copyright (C) 2012  Jean Delvare <jdelvare@suse.de>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published

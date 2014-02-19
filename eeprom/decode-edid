@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# Copyright (C) 2003-2006 Jean Delvare <khali@linux-fr.org>
+# Copyright (C) 2003-2008 Jean Delvare <jdelvare@suse.de>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -16,16 +16,6 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #    MA 02110-1301 USA.
-#
-# Version 0.1  2003-07-17  Jean Delvare <khali@linux-fr.org>
-# Version 0.2  2003-07-22  Jean Delvare <khali@linux-fr.org>
-#  Use print instead of syswrite.
-# Version 0.3  2003-08-24  Jean Delvare <khali@linux-fr.org>
-#  Fix data block length (128 bytes instead of 256).
-# Version 1.0  2004-02-08  Jean Delvare <khali@linux-fr.org>
-#  Added support for Linux 2.5/2.6 (i.e. sysfs).
-# Version 1.1  2006-09-01  Jean Delvare <khali@linux-fr.org>
-#  Append /usr/sbin or /usr/local/sbin to $PATH if needed.
 #
 # EEPROM data decoding for EDID. EDID (Extended Display Identification
 # Data) is a VESA standard which allows storing (on manufacturer's side)
