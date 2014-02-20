@@ -10,7 +10,6 @@ Of course the program is provided without warranty of any kind.
 #include <fcntl.h>
 #include <string.h>
 #include <time.h>
-#include <linux/i2c.h>
 #include <linux/i2c-dev.h>
 
 /*

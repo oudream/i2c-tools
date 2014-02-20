@@ -15,7 +15,6 @@ SVN HEAD
                 Round down PC3 numbers to comply with Jedec
   i2cdetect: Clarify the SMBus commands used for probing by default
   i2c-dev.h: Minimize differences with kernel flavor
-             Move SMBus helper functions to include/i2c/smbus.h
   i2c-stub-from-dump: Be more tolerant on input dump format
 
 3.1.0 (2011-12-04)

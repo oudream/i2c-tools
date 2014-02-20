@@ -22,9 +22,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include <linux/i2c.h>
 #include <linux/i2c-dev.h>
-#include <i2c/smbus.h>
 
 /*
 ** These are required to build this module against Linux older than 2.6.23.

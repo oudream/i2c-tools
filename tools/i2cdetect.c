@@ -26,9 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <linux/i2c.h>
 #include <linux/i2c-dev.h>
-#include <i2c/smbus.h>
 #include "i2cbusses.h"
 #include "../version.h"
 
