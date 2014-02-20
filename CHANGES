@@ -17,6 +17,7 @@ SVN HEAD
   i2cdetect: Clarify the SMBus commands used for probing by default
   i2c-dev.h: Minimize differences with kernel flavor
   i2c-stub-from-dump: Be more tolerant on input dump format
+  py-smbus: Fix module level docs
 
 3.1.0 (2011-12-04)
   decode-dimms: Decode module configuration type of DDR SDRAM
