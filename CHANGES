@@ -13,6 +13,7 @@ SVN HEAD
                 Fix DDR3 tRAS decoding
                 Fix DDR3 core timings rounding
                 Round down PC3 numbers to comply with Jedec
+                Encode "degrees" to HTML degree symbol
   i2cdetect: Clarify the SMBus commands used for probing by default
   i2c-dev.h: Minimize differences with kernel flavor
   i2c-stub-from-dump: Be more tolerant on input dump format
