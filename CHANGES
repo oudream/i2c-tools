@@ -36,6 +36,7 @@ SVN HEAD
                 Don't print raw SSTE32882 register values
                 Add support for Load Reduced DIMM (LRDIMM) DDR3 modules
                 Fully decode the DDR3 SDRAM Device Type field
+                Fix DDR3 extended temp range refresh rate decoding
                 Encode "degrees" to HTML degree symbol
                 Generate XHTML 1.1 compliant markup
                 Add a manual page
