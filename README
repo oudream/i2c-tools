@@ -91,5 +91,7 @@ QUESTIONS AND BUG REPORTS
 
 Please post your questions and bug reports to the linux-i2c mailing list:
   linux-i2c@vger.kernel.org
+with Cc to the current maintainer:
+  Jean Delvare <jdelvare@suse.de>
 For additional information about this list, see:
   http://vger.kernel.org/vger-lists.html#linux-i2c
