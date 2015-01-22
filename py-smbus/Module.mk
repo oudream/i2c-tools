@@ -12,7 +12,7 @@ PY_SMBUS_DIR := py-smbus
 PYTHON ?= python
 DISTUTILS := \
 	cd $(PY_SMBUS_DIR) && \
-	CPPFLAGS="$(CPPFLAGS) -I../include" $(PYTHON) setup.py
+	CPPFLAGS="$(CPPFLAGS) -I../include" LDFLAGS="$(LDFLAGS) -Llib -li2c" $(PYTHON) setup.py
 
 all-python: $(INCLUDE_DIR)/i2c/smbus.h
 	$(DISTUTILS) build
