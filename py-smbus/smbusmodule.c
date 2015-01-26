@@ -94,7 +94,11 @@ SMBus_dealloc(SMBus *self)
 	PyObject *ref = SMBus_close(self);
 	Py_XDECREF(ref);
 
+#if PY_MAJOR_VERSION >= 3
+	Py_TYPE(self)->tp_free((PyObject *)self);
+#else
 	self->ob_type->tp_free((PyObject *)self);
+#endif
 }
 
 #define MAXPATH 16
@@ -434,11 +438,19 @@ SMBus_list_to_data(PyObject *list, union i2c_smbus_data *data)
 
 	for (ii = 0; ii < len; ii++) {
 		PyObject *val = PyList_GET_ITEM(list, ii);
+#if PY_MAJOR_VERSION >= 3
+		if (!PyLong_Check(val)) {
+			PyErr_SetString(PyExc_TypeError, msg);
+			return 0; /* fail */
+		}
+		data->block[ii+1] = (__u8)PyLong_AS_LONG(val);
+#else
 		if (!PyInt_Check(val)) {
 			PyErr_SetString(PyExc_TypeError, msg);
 			return 0; /* fail */
 		}
 		data->block[ii+1] = (__u8)PyInt_AS_LONG(val);
+#endif
 	}
 
 	return 1; /* success */
@@ -637,9 +649,14 @@ static PyGetSetDef SMBus_getset[] = {
 };
 
 static PyTypeObject SMBus_type = {
+#if PY_MAJOR_VERSION >= 3
+	PyVarObject_HEAD_INIT(NULL, 0)
+	"SMBus",			/* tp_name */
+#else
 	PyObject_HEAD_INIT(NULL)
 	0,				/* ob_size */
 	"smbus.SMBus",			/* tp_name */
+#endif
 	sizeof(SMBus),			/* tp_basicsize */
 	0,				/* tp_itemsize */
 	(destructor)SMBus_dealloc,	/* tp_dealloc */
@@ -678,24 +695,50 @@ static PyTypeObject SMBus_type = {
 	SMBus_new,			/* tp_new */
 };
 
+#if PY_MAJOR_VERSION >= 3
+static struct PyModuleDef SMBusModule = {
+	PyModuleDef_HEAD_INIT,
+	"SMBus",			/* m_name */
+	SMBus_module_doc,  		/* m_doc */
+	-1,				/* m_size */
+	NULL,				/* m_methods */
+	NULL,				/* m_reload */
+	NULL,				/* m_traverse */
+	NULL,				/* m_clear */
+	NULL,				/* m_free */
+};
+#define INIT_RETURN(m)	return m
+#define INIT_FNAME	PyInit_smbus
+#else
 static PyMethodDef SMBus_module_methods[] = {
 	{NULL}
 };
+#define INIT_RETURN(m)	return
+#define INIT_FNAME	initsmbus
+#endif
 
 #ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
 #define PyMODINIT_FUNC void
 #endif
 PyMODINIT_FUNC
-initsmbus(void) 
+INIT_FNAME(void)
 {
 	PyObject* m;
 
 	if (PyType_Ready(&SMBus_type) < 0)
-		return;
+		INIT_RETURN(NULL);
 
+#if PY_MAJOR_VERSION >= 3
+	m = PyModule_Create(&SMBusModule);
+#else
 	m = Py_InitModule3("smbus", SMBus_module_methods, SMBus_module_doc);
+#endif
+	if (m == NULL)
+		INIT_RETURN(NULL);
 
 	Py_INCREF(&SMBus_type);
 	PyModule_AddObject(m, "SMBus", (PyObject *)&SMBus_type);
+
+	INIT_RETURN(m);
 }
 
