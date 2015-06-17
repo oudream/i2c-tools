@@ -12,7 +12,11 @@ TOOLS_DIR	:= tools
 TOOLS_CFLAGS	:= -Wstrict-prototypes -Wshadow -Wpointer-arith -Wcast-qual \
 		   -Wcast-align -Wwrite-strings -Wnested-externs -Winline \
 		   -W -Wundef -Wmissing-prototypes -Iinclude
+ifeq ($(USE_STATIC_LIB),1)
+TOOLS_LDFLAGS	:= $(LIB_DIR)/$(LIB_STLIBNAME)
+else
 TOOLS_LDFLAGS	:= -Llib -li2c
+endif
 
 TOOLS_TARGETS	:= i2cdetect i2cdump i2cset i2cget
 
