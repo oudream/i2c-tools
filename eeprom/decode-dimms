@@ -336,6 +336,21 @@ sub parity($)
 	return ($parity & 1);
 }
 
+# The code byte includes parity, the count byte does not.
+sub manufacturer_common($$)
+{
+	my ($count, $code) = @_;
+	my $manufacturer;
+
+	return "Invalid" if parity($code) != 1
+			 or ($code &= 0x7F) == 0;
+	return "Unknown" if $count >= @vendors
+			 or $code - 1 >= @{$vendors[$count]};
+	$manufacturer = $vendors[$count][$code - 1];
+	$manufacturer =~ s/ \(former .*\)$// if $opt_side_by_side;
+	return $manufacturer;
+}
+
 # New encoding format (as of DDR3) for manufacturer just has a count of
 # leading 0x7F rather than all the individual bytes.  The count bytes includes
 # parity!
@@ -346,12 +361,7 @@ sub manufacturer_ddr3($$)
 
 	return "Undefined" unless spd_written($count, $code);
 
-	return "Invalid" if parity($code) != 1
-			 or ($code & 0x7F) == 0;
-	return "Unknown" if ($count & 0x7F) >= @vendors
-			 or ($code & 0x7F) - 1 >= @{$vendors[$count & 0x7F]};
-	$manufacturer = $vendors[$count & 0x7F][($code & 0x7F) - 1];
-	$manufacturer =~ s/ \(former .*\)$// if $opt_side_by_side;
+	$manufacturer = manufacturer_common($count & 0x7F, $code);
 	$manufacturer .= "? (Invalid parity)" if parity($count) != 1;
 	return $manufacturer;
 }
@@ -369,11 +379,7 @@ sub manufacturer(@)
 	}
 
 	return ("Invalid", []) unless defined $first;
-	return ("Invalid", [$first, @bytes]) if parity($first) != 1;
-	if (parity($ai) == 0) {
-		$ai |= 0x80;
-	}
-	return (manufacturer_ddr3($ai, $first), \@bytes);
+	return (manufacturer_common($ai, $first), \@bytes);
 }
 
 sub manufacturer_data(@)
