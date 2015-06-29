@@ -42,6 +42,7 @@ SVN HEAD
                 Generate XHTML 1.1 compliant markup
                 Add a manual page
                 Correctly check for out-of-bounds vendor ID
+                Update manufacturer IDs (JEP106AQ)
   decode-vaio: Add a manual page
   eeprog: Add a manual page
   eeprom: Add a manual page
