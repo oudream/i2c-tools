@@ -344,8 +344,12 @@ sub manufacturer_ddr3($$)
 	my ($count, $code) = @_;
 	my $manufacturer;
 
-	return "Invalid" if parity($code) != 1;
-	return "Unknown" if ($code & 0x7F) - 1 >= @{$vendors[$count & 0x7F]};
+	return "Undefined" unless spd_written($count, $code);
+
+	return "Invalid" if parity($code) != 1
+			 or ($code & 0x7F) == 0;
+	return "Unknown" if ($count & 0x7F) >= @vendors
+			 or ($code & 0x7F) - 1 >= @{$vendors[$count & 0x7F]};
 	$manufacturer = $vendors[$count & 0x7F][($code & 0x7F) - 1];
 	$manufacturer =~ s/ \(former .*\)$// if $opt_side_by_side;
 	$manufacturer .= "? (Invalid parity)" if parity($count) != 1;
