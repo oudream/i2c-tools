@@ -2,13 +2,11 @@
 
 CFLAGS = -O2 -I../include -Wall
 
-all:  eepromer eeprom eeprog
+all:  eepromer eeprom
 
 eepromer:  eepromer.o
 
 eeprom:  eeprom.o
 
-eeprog: eeprog.o 24cXX.o
-
 clean:
-	rm -rf *~ *.o eepromer eeprom eeprog
+	rm -rf *~ *.o eepromer eeprom
