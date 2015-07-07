@@ -7,7 +7,7 @@
 
 EEPROG_DIR	:= eeprog
 
-EEPROG_CFLAGS	:= -O2 -Iinclude -Wall
+EEPROG_CFLAGS	:= -Iinclude
 ifeq ($(USE_STATIC_LIB),1)
 EEPROG_LDFLAGS	:= $(LIB_DIR)/$(LIB_STLIBNAME)
 else
