@@ -28,7 +28,7 @@ $(TOOLS_DIR)/i2cdetect: $(TOOLS_DIR)/i2cdetect.o $(TOOLS_DIR)/i2cbusses.o
 	$(CC) $(LDFLAGS) -o $@ $^ $(TOOLS_LDFLAGS)
 
 $(TOOLS_DIR)/i2cdump: $(TOOLS_DIR)/i2cdump.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o
-	$(CC) $(LDFLAGS) -o $@ $^  $(TOOLS_LDFLAGS)
+	$(CC) $(LDFLAGS) -o $@ $^ $(TOOLS_LDFLAGS)
 
 $(TOOLS_DIR)/i2cset: $(TOOLS_DIR)/i2cset.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o
 	$(CC) $(LDFLAGS) -o $@ $^ $(TOOLS_LDFLAGS)
