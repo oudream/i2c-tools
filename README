@@ -22,7 +22,7 @@ category has its own sub-directory:
   Perl scripts for decoding different types of EEPROMs (SPD, EDID...) These
   scripts rely on the "eeprom" kernel driver. They are installed by default.
 
-* eepromer
+* eeprog, eepromer
   Tools for writing to EEPROMs. These tools rely on the "i2c-dev" kernel
   driver. They are not installed by default.
 
@@ -31,7 +31,7 @@ category has its own sub-directory:
   default.
 
 * lib
-  The I2C library, used by eepromer, py-smbus and tools. Installed by
+  The I2C library, used by eeprog, py-smbus and tools. Installed by
   default.
 
 * py-smbus
