@@ -4,13 +4,16 @@ Use eeprom for small eeproms with one-byte addresses:
 	24C01, 24C01A, 24C02, 24C04, 24C08, and 24C16
 	It works only on true i2c bus adapters.
 	See README.eeprom for details.
+	This program is deprecated, please use eeprog instead.
 
 Use eepromer for large eeproms with two-byte addresses:
 	24C32, 24C64, 24C128, 24C256, and 24C512
 	It works only on true i2c bus adapters.
 	See README.eepromer for details.
+	This program is deprecated, please use eeprog instead.
 
 Use eeprog for either small or large eeproms.
+	This program was moved to a separate subdirectory.
 	Use the -16 switch for large eeproms.
 	It works on both i2c and smbus bus adapters.
 	See README.eeprog for details.

@@ -45,6 +45,6 @@ KERNELVERSION	:= $(shell uname -r)
 all:
 
 EXTRA	:=
-#EXTRA	+= py-smbus
+#EXTRA	+= eeprog py-smbus
 SRCDIRS	:= include lib eeprom stub tools $(EXTRA)
 include $(SRCDIRS:%=%/Module.mk)

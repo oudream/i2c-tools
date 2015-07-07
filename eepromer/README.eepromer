@@ -1,5 +1,7 @@
 Simple program for storing data to I2C EEPROM.
 
+This program is deprecated, please use eeprog instead.
+
 !!!!!!!!!!!!!!!!!!!!!!!!Warning!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 The EEPROM must be a large EEPROM which uses a 2-byte address

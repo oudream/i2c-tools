@@ -2,6 +2,8 @@ You can use this program to read/write to i2c-eeproms
 like the popular 24C16, 24C08, 24C04,.. In contrast to eeprommer
 which supports 24C256-type eeproms 24C16ss use 1-byte addresses!
 
+This program is deprecated, please use eeprog instead.
+
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Warning !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!                                                                           !
 !!! This program should only be used on external busses such as i2c-pport.    !
