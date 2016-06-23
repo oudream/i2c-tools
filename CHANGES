@@ -1,7 +1,7 @@
 i2c-tools CHANGES
 -----------------
 
-3.1.2 (work in progress)
+3.1.2 (2015-06-17)
   decode-dimms: Fix DDR3 extended temp range refresh rate decoding
   py-smbus: Add support for python 3
 
