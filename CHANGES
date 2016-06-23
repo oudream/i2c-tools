@@ -3,6 +3,7 @@ i2c-tools CHANGES
 
 3.1.2 (work in progress)
   decode-dimms: Fix DDR3 extended temp range refresh rate decoding
+  py-smbus: Add support for python 3
 
 3.1.1 "Happy Birthday Pollux" (2014-02-20)
   decode-dimms: Decode module configuration type of DDR2 SDRAM
