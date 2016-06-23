@@ -343,9 +343,11 @@ sub manufacturer_ddr3($$)
 {
 	my ($count, $code) = @_;
 	return "Invalid" if parity($count) != 1;
-	return "Invalid" if parity($code) != 1;
-	return (($code & 0x7F) - 1 > $vendors[$count & 0x7F]) ? "Unknown" :
-		$vendors[$count & 0x7F][($code & 0x7F) - 1];
+	return "Invalid" if parity($code) != 1
+			 or ($code & 0x7F) == 0;
+	return "Unknown" if ($count & 0x7F) >= @vendors
+			 or ($code & 0x7F) - 1 >= @{$vendors[$count & 0x7F]};
+	return $vendors[$count & 0x7F][($code & 0x7F) - 1];
 }
 
 sub manufacturer(@)
