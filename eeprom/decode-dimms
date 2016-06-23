@@ -1289,8 +1289,9 @@ sub decode_ddr3_sdram($)
 	printl("DLL-Off Mode supported?", ($bytes->[30] & 128) ? "Yes" : "No");
 	printl("Operating temperature range", sprintf "0-%d degrees C",
 		($bytes->[31] & 1) ? 95 : 85);
-	printl("Refresh Rate in extended temp range",
-		($bytes->[31] & 2) ? "2X" : "1X");
+	printl_cond($bytes->[31] & 1,
+		    "Refresh Rate in extended temp range",
+		    ($bytes->[31] & 2) ? "1X" : "2X");
 	printl("Auto Self-Refresh?", ($bytes->[31] & 4) ? "Yes" : "No");
 	printl("On-Die Thermal Sensor readout?",
 		($bytes->[31] & 8) ? "Yes" : "No");
