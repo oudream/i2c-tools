@@ -46,6 +46,7 @@ SVN HEAD
   decode-vaio: Add a manual page
   eeprog: Add a manual page
           Moved to a separate subdirectory
+          Increase delay after writes
   eeprom: Add a manual page
           Marked as deprecated
   eepromer: Add a manual page

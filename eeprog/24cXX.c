@@ -26,6 +26,13 @@
 #include <i2c/smbus.h>
 #include "24cXX.h"
 
+/*
+ * EEPROMs need some time to process writes
+ * Ideally this value should either be settable with a command line parameter,
+ * or "guessed" at runtime using a retry loop.
+ */
+#define WRITE_DELAY_US		5000
+
 static int i2c_write_1b(struct eeprom *e, __u8 buf)
 {
 	int r;
@@ -33,7 +40,7 @@ static int i2c_write_1b(struct eeprom *e, __u8 buf)
 	r = i2c_smbus_write_byte(e->fd, buf);
 	if(r < 0)
 		fprintf(stderr, "Error i2c_write_1b: %s\n", strerror(errno));
-	usleep(10);
+	usleep(WRITE_DELAY_US);
 	return r;
 }
 
@@ -44,7 +51,7 @@ static int i2c_write_2b(struct eeprom *e, __u8 buf[2])
 	r = i2c_smbus_write_byte_data(e->fd, buf[0], buf[1]);
 	if(r < 0)
 		fprintf(stderr, "Error i2c_write_2b: %s\n", strerror(errno));
-	usleep(10);
+	usleep(WRITE_DELAY_US);
 	return r;
 }
 
@@ -56,7 +63,7 @@ static int i2c_write_3b(struct eeprom *e, __u8 buf[3])
 	r = i2c_smbus_write_word_data(e->fd, buf[0], buf[2] << 8 | buf[1]);
 	if(r < 0)
 		fprintf(stderr, "Error i2c_write_3b: %s\n", strerror(errno));
-	usleep(10);
+	usleep(WRITE_DELAY_US);
 	return r;
 }
 
