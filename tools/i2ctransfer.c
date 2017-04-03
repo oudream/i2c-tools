@@ -199,8 +199,6 @@ int main(int argc, char *argv[])
 
 			arg_ptr = end;
 			if (*arg_ptr) {
-				int whole_range_ok;
-
 				if (*arg_ptr++ != '@') {
 					fprintf(stderr, "Error: Unknown separator after length\n");
 					goto err_out_with_arg;
@@ -211,16 +209,22 @@ int main(int argc, char *argv[])
 				 * the address here.
 				 */
 
-				address = parse_i2c_address(arg_ptr);
-				/* With 'force', allow whole address range */
-				whole_range_ok = force && address == -2;
-				if (address < 0 && !whole_range_ok)
-					goto err_out_with_arg;
+				if (!force) {
+					address = parse_i2c_address(arg_ptr);
+					if (address < 0)
+						goto err_out_with_arg;
 
-				/* Ensure address is not busy */
-				if (!force && set_slave_addr(file, address, 0))
-					goto err_out_with_arg;
-
+					/* Ensure address is not busy */
+					if (set_slave_addr(file, address, 0))
+						goto err_out_with_arg;
+				} else {
+					/* 'force' allows whole address range */
+					address = strtol(arg_ptr, &end, 0);
+					if (arg_ptr == end || *end || address > 0x7f) {
+						fprintf(stderr, "Error: Invalid chip address\n");
+						goto err_out_with_arg;
+					}
+				}
 			} else {
 				/* Reuse last address if possible */
 				if (address < 0) {
