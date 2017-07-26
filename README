@@ -6,6 +6,9 @@ These tools were originally part of the lm-sensors project but were finally
 split into their own package for convenience. They compile, run and have been
 tested on GNU/Linux.
 
+The latest version of the code can be downloaded from:
+  https://i2c.wiki.kernel.org/index.php/I2C_Tools
+
 
 CONTENTS
 --------
