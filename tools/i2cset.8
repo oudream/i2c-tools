@@ -1,4 +1,4 @@
-.TH I2CSET 8 "November 2008"
+.TH I2CSET 8 "October 2017"
 .SH "NAME"
 i2cset \- set I2C registers
 
@@ -91,6 +91,35 @@ I2C bus, cause data loss, or have more serious side effects. Writing to
 a serial EEPROM on a memory DIMM (chip addresses between 0x50 and 0x57) may
 DESTROY your memory, leaving your system unbootable!  Be extremely careful
 using this program.
+
+.SH EXAMPLES
+.PP
+Write value 0x42 to 8-bit register 0x11 of the I2C device at 7-bit
+address 0x2d on bus 1 (i2c-1), after user confirmation:
+.nf
+.RS
+# i2cset 1 0x2d 0x11 0x42
+.RE
+.fi
+.PP
+Immediately clear the 3 least significant bits of 8-bit register 0x11 of the
+I2C device at 7-bit address 0x2d on bus 1 (i2c-1) (no user confirmation):
+.nf
+.RS
+# i2cset -y -m 0x07 1 0x2d 0x11 0x00
+.RE
+.fi
+.PP
+Write value 0x5000 to 16-bit register 0x02 of the I2C device at 7-bit
+address 0x48 on bus 1 (i2c-1), after user confirmation:
+.nf
+.RS
+# i2cset 1 0x48 0x02 0x5000 w
+.RE
+.fi
+.PP
+Also see i2cget(8) for examples of combined usage of \fIi2cset\fR and
+\fIi2cget\fR.
 
 .SH SEE ALSO
 i2cdetect(8), i2cdump(8), i2cget(8), i2ctransfer(8), isaset(8)

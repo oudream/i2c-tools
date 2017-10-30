@@ -1,4 +1,4 @@
-.TH I2CGET 8 "May 2008"
+.TH I2CGET 8 "October 2017"
 .SH "NAME"
 i2cget \- read from I2C/SMBus chip registers
 
@@ -57,6 +57,57 @@ i2cget can be extremely dangerous if used improperly. I2C and SMBus are designed
 in such a way that an SMBus read transaction can be seen as a write transaction by
 certain chips. This is particularly true if setting \fImode\fR to \fBcp\fP (write byte/read
 byte with PEC). Be extremely careful using this program.
+
+.SH EXAMPLES
+.PP
+Get the value of 8-bit register 0x11 of the I2C device at 7-bit address 0x2d
+on bus 1 (i2c-1), after user confirmation:
+.nf
+.RS
+# i2cget 1 0x2d 0x11
+.RE
+.fi
+.PP
+Get the value of 16-bit register 0x00 of the I2C device at 7-bit address 0x48
+on bus 1 (i2c-1), after user confirmation:
+.nf
+.RS
+# i2cget 1 0x48 0x00 w
+.RE
+.fi
+.PP
+Set the internal pointer register of a 24C02 EEPROM at 7-bit address 0x50
+on bus 9 (i2c-9) to 0x00, then read the first 2 bytes from that EEPROM:
+.nf
+.RS
+# i2cset -y 9 0x50 0x00 ; i2cget -y 9 0x50 ; i2cget -y 9 0x50
+.RE
+.fi
+This assumes that the device automatically increments its internal pointer
+register on every read, and supports read byte transactions (read without
+specifying the register address, "Receive Byte" in SMBus terminology.)
+Most EEPROM devices behave that way. Note that this is only safe as long as
+nobody else is accessing the I2C device at the same time. A safer approach
+would be to use a "Read Word" SMBus transaction instead, or an I2C Block
+Read transaction to read more than 2 bytes.
+.PP
+Set the internal pointer register of a 24C32 EEPROM at 7-bit address 0x53
+on bus 9 (i2c-9) to 0x0000, then read the first 2 bytes from that EEPROM:
+.nf
+.RS
+# i2cset -y 9 0x53 0x00 0x00 ; i2cget -y 9 0x53 ; i2cget -y 9 0x53
+.RE
+.fi
+This again assumes that the device automatically increments its internal
+pointer register on every read, and supports read byte transactions. While
+the previous example was for a small EEPROM using 8-bit internal addressing,
+this example is for a larger EEPROM using 16-bit internal addressing. Beware
+that running this command on a small EEPROM using 8-bit internal addressing
+would actually \fIwrite\fR 0x00 to the first byte of that EEPROM. The safety
+concerns raised above still stand, however in this case there is no SMBus
+equivalent, so this is the only way to read data from a large EEPROM if your
+master isn't fully I2C capable. With a fully I2C capable master, you would
+use \fIi2ctransfer\fR to achieve the same in a safe and faster way.
 
 .SH SEE ALSO
 i2cdetect(8), i2cdump(8), i2cset(8), i2ctransfer(8)

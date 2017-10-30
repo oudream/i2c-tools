@@ -1,4 +1,4 @@
-.TH I2CDUMP 8 "May 2008"
+.TH I2CDUMP 8 "October 2017"
 .SH NAME
 i2cdump \- examine I2C registers
 
@@ -73,6 +73,44 @@ resulting in possible misbehavior or corruption. Do not use i2cdump
 on random addresses. Anyway, it is of little use unless you have good
 knowledge of the chip you're working with and an idea of what you are looking
 for.
+
+.SH EXAMPLES
+.PP
+Dump the whole contents of I2C device at 7-bit address 0x50 on bus 9
+(i2c-9), using the default read method (byte mode), after user confirmation:
+.nf
+.RS
+# i2cdump 9 0x50
+.RE
+.fi
+.PP
+Immediately dump the whole contents of I2C device at 7-bit address 0x50 on
+bus 9 (i2c-9), using I2C block read transactions (no user confirmation):
+.nf
+.RS
+# i2cdump -y 9 0x50 i
+.RE
+.fi
+If the device is an EEPROM, the output would typically be the same as output
+of the previous example.
+.PP
+Dump registers 0x00 to 0x3f of the I2C device at 7-bit address 0x2d on
+bus 1 (i2c-1), using the default read method (byte mode), after user
+confirmation:
+.nf
+.RS
+# i2cdump -r 0x00-0x3f 1 0x2d
+.RE
+.fi
+.PP
+Dump the registers of the SMBus device at address 0x69 on bus 0 (i2c-0),
+using one SMBus block read transaction with error checking enabled, after
+user confirmation:
+.nf
+.RS
+# i2cdump 0 0x69 sp
+.RE
+.fi
 
 .SH SEE ALSO
 i2cdetect(8), i2cget(8), i2cset(8), i2ctransfer(8), isadump(8)
