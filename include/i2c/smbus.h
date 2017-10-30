@@ -23,6 +23,8 @@
 #ifndef LIB_I2C_SMBUS_H
 #define LIB_I2C_SMBUS_H
 
+#define I2C_API_VERSION		0x100
+
 #include <linux/types.h>
 #include <linux/i2c.h>
 
