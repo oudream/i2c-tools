@@ -1,8 +1,9 @@
 i2c-tools CHANGES
 -----------------
 
-SVN HEAD
+4.0 (2017-10-30)
   tools: Fix build with recent compilers (gcc 4.6+)
+         Add examples to the manual pages
   README: Clarify licenses
           Mention the current maintainer
   decode-dimms: Decode module configuration type of DDR2 SDRAM
