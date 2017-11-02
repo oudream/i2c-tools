@@ -219,18 +219,18 @@ struct i2c_adap *gather_i2c_busses(void)
 
 		/* this should work for kernels 2.6.5 or higher and */
 		/* is preferred because is unambiguous */
-		sprintf(n, "%s/%s/name", sysfs, de->d_name);
+		snprintf(n, NAME_MAX, "%s/%s/name", sysfs, de->d_name);
 		f = fopen(n, "r");
 		/* this seems to work for ISA */
 		if(f == NULL) {
-			sprintf(n, "%s/%s/device/name", sysfs, de->d_name);
+			snprintf(n, NAME_MAX, "%s/%s/device/name", sysfs, de->d_name);
 			f = fopen(n, "r");
 		}
 		/* non-ISA is much harder */
 		/* and this won't find the correct bus name if a driver
 		   has more than one bus */
 		if(f == NULL) {
-			sprintf(n, "%s/%s/device", sysfs, de->d_name);
+			snprintf(n, NAME_MAX, "%s/%s/device", sysfs, de->d_name);
 			if(!(ddir = opendir(n)))
 				continue;
 			while ((dde = readdir(ddir)) != NULL) {
@@ -239,8 +239,8 @@ struct i2c_adap *gather_i2c_busses(void)
 				if (!strcmp(dde->d_name, ".."))
 					continue;
 				if ((!strncmp(dde->d_name, "i2c-", 4))) {
-					sprintf(n, "%s/%s/device/%s/name",
-						sysfs, de->d_name, dde->d_name);
+					snprintf(n, NAME_MAX, "%s/%s/device/%s/name",
+						 sysfs, de->d_name, dde->d_name);
 					if((f = fopen(n, "r")))
 						goto found;
 				}
