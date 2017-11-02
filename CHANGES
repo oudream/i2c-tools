@@ -1,6 +1,9 @@
 i2c-tools CHANGES
 -----------------
 
+master
+  tools: Fix potential buffer overflows in i2cbusses
+
 4.0 (2017-10-30)
   tools: Fix build with recent compilers (gcc 4.6+)
          Add examples to the manual pages
