@@ -136,7 +136,7 @@ struct i2c_adap *gather_i2c_busses(void)
 	FILE *f;
 	char fstype[NAME_MAX], sysfs[NAME_MAX], n[NAME_MAX];
 	int foundsysfs = 0;
-	int count=0;
+	int len, count = 0;
 	struct i2c_adap *adapters;
 
 	adapters = calloc(BUNCH, sizeof(struct i2c_adap));
@@ -219,18 +219,32 @@ struct i2c_adap *gather_i2c_busses(void)
 
 		/* this should work for kernels 2.6.5 or higher and */
 		/* is preferred because is unambiguous */
-		snprintf(n, NAME_MAX, "%s/%s/name", sysfs, de->d_name);
+		len = snprintf(n, NAME_MAX, "%s/%s/name", sysfs, de->d_name);
+		if (len >= NAME_MAX) {
+			fprintf(stderr, "%s: path truncated\n", n);
+			continue;
+		}
 		f = fopen(n, "r");
 		/* this seems to work for ISA */
 		if(f == NULL) {
-			snprintf(n, NAME_MAX, "%s/%s/device/name", sysfs, de->d_name);
+			len = snprintf(n, NAME_MAX, "%s/%s/device/name", sysfs,
+				       de->d_name);
+			if (len >= NAME_MAX) {
+				fprintf(stderr, "%s: path truncated\n", n);
+				continue;
+			}
 			f = fopen(n, "r");
 		}
 		/* non-ISA is much harder */
 		/* and this won't find the correct bus name if a driver
 		   has more than one bus */
 		if(f == NULL) {
-			snprintf(n, NAME_MAX, "%s/%s/device", sysfs, de->d_name);
+			len = snprintf(n, NAME_MAX, "%s/%s/device", sysfs,
+				       de->d_name);
+			if (len >= NAME_MAX) {
+				fprintf(stderr, "%s: path truncated\n", n);
+				continue;
+			}
 			if(!(ddir = opendir(n)))
 				continue;
 			while ((dde = readdir(ddir)) != NULL) {
@@ -239,8 +253,16 @@ struct i2c_adap *gather_i2c_busses(void)
 				if (!strcmp(dde->d_name, ".."))
 					continue;
 				if ((!strncmp(dde->d_name, "i2c-", 4))) {
-					snprintf(n, NAME_MAX, "%s/%s/device/%s/name",
-						 sysfs, de->d_name, dde->d_name);
+					len = snprintf(n, NAME_MAX,
+						       "%s/%s/device/%s/name",
+						       sysfs, de->d_name,
+						       dde->d_name);
+					if (len >= NAME_MAX) {
+						fprintf(stderr,
+							"%s: path truncated\n",
+							n);
+						continue;
+					}
 					if((f = fopen(n, "r")))
 						goto found;
 				}
