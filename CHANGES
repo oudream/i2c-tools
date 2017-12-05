@@ -7,6 +7,7 @@ master
                 Decode size and timings of DDR4
                 Decode misc parameters of DDR4
                 Decode physical characteristics of DDR4
+                Documentation update for DDR4
 
 4.0 (2017-10-30)
   tools: Fix build with recent compilers (gcc 4.6+)

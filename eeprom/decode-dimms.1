@@ -1,6 +1,7 @@
 .\"
 .\"  decode-dimms.1 - manpage for the i2c-tools/decode-dimms utility
 .\"  Copyright (C) 2013  Jaromir Capik
+.\"  Copyright (C) 2017  Jean Delvare
 .\"
 .\"  This program is free software; you can redistribute it and/or modify
 .\"  it under the terms of the GNU General Public License as published by
@@ -16,7 +17,7 @@
 .\"  with this program; if not, write to the Free Software Foundation, Inc.,
 .\"  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 .\"
-.TH decode-dimms 1 "Oct 2013" "i2c-tools" "User Commands"
+.TH decode-dimms 1 "Nov 2017" "i2c-tools" "User Commands"
 .SH NAME
 decode-dimms \- decode the information found in memory module SPD EEPROMs
 .SH SYNOPSIS
@@ -31,8 +32,8 @@ The purpose of the
 .B decode-dimms
 tool is to decode the information found in memory module SPD EEPROMs.
 The SPD data is read either from the running system or dump files.
-In the former case, the tool requires either the eeprom kernel module
-or the at24 kernel module to be loaded.
+In the former case, the tool requires a kernel module to be loaded:
+eeprom, at24 or ee1004 (for DDR4 SDRAM.)
 .SH PARAMETERS
 .TP
 .B \-f, --format
