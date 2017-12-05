@@ -6,6 +6,7 @@ master
   decode-dimms: Add preliminary DDR4 support
                 Decode size and timings of DDR4
                 Decode misc parameters of DDR4
+                Decode physical characteristics of DDR4
 
 4.0 (2017-10-30)
   tools: Fix build with recent compilers (gcc 4.6+)

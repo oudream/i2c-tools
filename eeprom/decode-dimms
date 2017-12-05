@@ -1404,6 +1404,7 @@ sub ddr3_mtb_ftb($$$$)
 	return $byte1 * $mtb + $byte2 * $ftb / 1000;
 }
 
+# Also works for DDR4
 sub ddr3_reference_card($$)
 {
 	my ($rrc, $ext) = @_;
@@ -1727,7 +1728,7 @@ use constant DDR4_UNBUFFERED	=> 1;
 use constant DDR4_REGISTERED	=> 2;
 use constant DDR4_LOAD_REDUCED	=> 4;
 
-# Parameter: EEPROM bytes 0-383 (using 1-125)
+# Parameter: EEPROM bytes 0-383 (using 1-130)
 sub decode_ddr4_sdram($)
 {
 	my $bytes = shift;
@@ -1915,6 +1916,25 @@ sub decode_ddr4_sdram($)
 
 	printl("Thermal Sensor",
 	       $bytes->[14] & 0x80 ? "TSE2004 compliant" : "No");
+
+# type-specific settings
+	if ($module_types[$bytes->[3] & 0x0f]->{family} == DDR4_UNBUFFERED ||
+	    $module_types[$bytes->[3] & 0x0f]->{family} == DDR4_REGISTERED ||
+	    $module_types[$bytes->[3] & 0x0f]->{family} == DDR4_LOAD_REDUCED) {
+		prints("Physical Characteristics");
+
+		my $height = $bytes->[128] & 0x1f;
+		printl("Module Height",
+		       $height == 0x00 ? "15 mm or less" :
+		       $height == 0x1f ? "more than 45 mm" :
+		       sprintf("%u mm", $height + 15));
+		printl("Module Thickness",
+		       sprintf("%d mm front, %d mm back",
+			       ($bytes->[129] & 0x0f) + 1,
+			       (($bytes->[129] >> 4) & 15) + 1));
+		printl("Module Reference Card",
+		       ddr3_reference_card($bytes->[130], $bytes->[128]));
+	}
 }
 
 # Parameter: EEPROM bytes 0-127 (using 4-5)
