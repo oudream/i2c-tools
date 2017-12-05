@@ -1728,7 +1728,7 @@ use constant DDR4_UNBUFFERED	=> 1;
 use constant DDR4_REGISTERED	=> 2;
 use constant DDR4_LOAD_REDUCED	=> 4;
 
-# Parameter: EEPROM bytes 0-383 (using 1-130)
+# Parameter: EEPROM bytes 0-383 (using 1-255)
 sub decode_ddr4_sdram($)
 {
 	my $bytes = shift;
@@ -1760,6 +1760,15 @@ sub decode_ddr4_sdram($)
 		    ($bytes->[1] >> 4) . "." . ($bytes->[1] & 0xf));
 
 	printl("Module Type", $module_types[$bytes->[3] & 0x0f]->{type});
+
+# CRC of block 1
+	my $crc_calc = calculate_crc($bytes, 128, 126);
+	my $crc_spd = ($bytes->[255] << 8) | $bytes->[254];
+	my $crc_block_1_ok = $crc_calc == $crc_spd;
+	printl("EEPROM CRC of bytes 128-253", $crc_block_1_ok ?
+		sprintf("OK (0x\%04X)", $crc_calc) :
+		sprintf("Bad\n(found 0x\%04X, calculated 0x\%04X)",
+			$crc_spd, $crc_calc));
 
 # time bases
 	if (($bytes->[17] & 0x03) != 0x00 || ($bytes->[17] & 0xc0) != 0x00) {
@@ -1918,6 +1927,8 @@ sub decode_ddr4_sdram($)
 	       $bytes->[14] & 0x80 ? "TSE2004 compliant" : "No");
 
 # type-specific settings
+	return unless $crc_block_1_ok || $opt_igncheck;
+
 	if ($module_types[$bytes->[3] & 0x0f]->{family} == DDR4_UNBUFFERED ||
 	    $module_types[$bytes->[3] & 0x0f]->{family} == DDR4_REGISTERED ||
 	    $module_types[$bytes->[3] & 0x0f]->{family} == DDR4_LOAD_REDUCED) {
@@ -2288,15 +2299,14 @@ sub checksum($)
 }
 
 # Calculate and verify CRC
-sub check_crc($)
+sub calculate_crc($$$)
 {
-	my $bytes = shift;
+	my ($bytes, $start, $len) = @_;
 	my $crc = 0;
-	my $crc_cover = $bytes->[0] & 0x80 ? 116 : 125;
-	my $crc_ptr = 0;
+	my $crc_ptr = $start;
 	my $crc_bit;
 
-	while ($crc_ptr <= $crc_cover) {
+	while ($crc_ptr < $start + $len) {
 		$crc = $crc ^ ($bytes->[$crc_ptr] << 8);
 		for ($crc_bit = 0; $crc_bit < 8; $crc_bit++) {
 			if ($crc & 0x8000) {
@@ -2307,7 +2317,15 @@ sub check_crc($)
 		}
 		$crc_ptr++;
 	}
-	$crc &= 0xffff;
+
+	return $crc & 0xffff;
+}
+
+sub check_crc($)
+{
+	my $bytes = shift;
+	my $crc_cover = $bytes->[0] & 0x80 ? 116 : 125;
+	my $crc = calculate_crc($bytes, 0, $crc_cover + 1);
 
 	my $dimm_crc = ($bytes->[127] << 8) | $bytes->[126];
 	return ("EEPROM CRC of bytes 0-$crc_cover",
