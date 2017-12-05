@@ -1886,6 +1886,35 @@ sub decode_ddr4_sdram($)
 	printl_cond($twtr, "Minimum Write to Read Time (tWTR_S)", tns3($twtr));
 	$twtr = ((($bytes->[43] & 0xf0) << 4) + $bytes->[45]) * $mtb / 1000;
 	printl_cond($twtr, "Minimum Write to Read Time (tWTR_L)", tns3($twtr));
+
+# miscellaneous stuff
+	prints("Other Information");
+
+	my $package_type = ($bytes->[6] & 0x80) == 0x00 ? "Monolithic" :
+			   $signal_loading == 0x01 ? "Multi-load stack" :
+			   $signal_loading == 0x02 ? "3DS" : "Unknown";
+	$package_type .= sprintf(" (%u dies)", $die_count) if $die_count >= 2;
+	printl("Package Type", $package_type);
+
+	my @mac = ("Untested",
+		   "700 K", "600 K", "500 K", "400 K", "300 K", "200 K",
+		   undef, "Unlimited");
+	my $mac = $bytes->[7] & 0x0f;
+	printl_cond(defined $mac[$mac], "Maximum Activate Count", $mac[$mac]);
+
+	my $ppr = $bytes->[9] >> 6;
+	printl("Post Package Repair",
+	       $ppr == 0x00 ? "Not supported" :
+	       $ppr == 0x01 ? "One row per bank group" : "Unknown");
+	printl_cond($ppr != 0x00, "Soft PPR", $bytes->[9] & 0x20 ?
+		    "Supported" : "Not Supported");
+
+	printl("Module Nominal Voltage",
+	       $bytes->[11] & 0x01 ? "1.2 V" :
+	       $bytes->[11] & 0x02 ? "Unknown (1.2 V endurant)" : "Unknown");
+
+	printl("Thermal Sensor",
+	       $bytes->[14] & 0x80 ? "TSE2004 compliant" : "No");
 }
 
 # Parameter: EEPROM bytes 0-127 (using 4-5)
