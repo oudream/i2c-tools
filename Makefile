@@ -32,10 +32,18 @@ CFLAGS		?= -O2
 CFLAGS		+= -Wall
 SOCFLAGS	:= -fpic -D_REENTRANT $(CFLAGS)
 
-USE_STATIC_LIB ?= 0
+BUILD_DYNAMIC_LIB ?= 1
 BUILD_STATIC_LIB ?= 1
+USE_STATIC_LIB ?= 0
+
 ifeq ($(USE_STATIC_LIB),1)
 BUILD_STATIC_LIB := 1
+endif
+
+ifeq ($(BUILD_DYNAMIC_LIB),0)
+ifeq ($(BUILD_STATIC_LIB),0)
+$(error BUILD_DYNAMIC_LIB and BUILD_STATIC_LIB cannot be disabled at the same time)
+endif
 endif
 
 KERNELVERSION	:= $(shell uname -r)
