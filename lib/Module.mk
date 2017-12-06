@@ -42,11 +42,11 @@ endif
 $(LIB_DIR)/$(LIB_SHLIBNAME): $(LIB_DIR)/smbus.o
 	$(CC) -shared $(LDFLAGS) -Wl,--version-script=$(LIB_DIR)/libi2c.map -Wl,-soname,$(LIB_SHSONAME) -o $@ $^ -lc
 
-$(LIB_DIR)/$(LIB_SHSONAME):
+$(LIB_DIR)/$(LIB_SHSONAME): $(LIB_DIR)/$(LIB_SHLIBNAME)
 	$(RM) $@
 	$(LN) $(LIB_SHLIBNAME) $@
 
-$(LIB_DIR)/$(LIB_SHBASENAME):
+$(LIB_DIR)/$(LIB_SHBASENAME): $(LIB_DIR)/$(LIB_SHLIBNAME)
 	$(RM) $@
 	$(LN) $(LIB_SHLIBNAME) $@
 
