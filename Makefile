@@ -43,6 +43,8 @@ endif
 ifeq ($(BUILD_DYNAMIC_LIB),0)
 ifeq ($(BUILD_STATIC_LIB),0)
 $(error BUILD_DYNAMIC_LIB and BUILD_STATIC_LIB cannot be disabled at the same time)
+else
+USE_STATIC_LIB := 1
 endif
 endif
 
