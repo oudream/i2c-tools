@@ -37,6 +37,13 @@ ifeq ($(BUILD_STATIC_LIB),1)
 LIB_TARGETS	+= $(LIB_STLIBNAME)
 endif
 
+# Library file to link against (static or dynamic)
+ifeq ($(USE_STATIC_LIB),1)
+LIB_DEPS	:= $(LIB_DIR)/$(LIB_STLIBNAME)
+else
+LIB_DEPS	:= $(LIB_DIR)/$(LIB_SHBASENAME)
+endif
+
 #
 # Libraries
 #
