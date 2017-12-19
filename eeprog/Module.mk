@@ -20,7 +20,7 @@ EEPROG_TARGETS	:= eeprog
 # Programs
 #
 
-$(EEPROG_DIR)/eeprog: $(EEPROG_DIR)/eeprog.o $(EEPROG_DIR)/24cXX.o
+$(EEPROG_DIR)/eeprog: $(EEPROG_DIR)/eeprog.o $(EEPROG_DIR)/24cXX.o $(LIB_DEPS)
 	$(CC) $(LDFLAGS) -o $@ $^ $(EEPROG_LDFLAGS)
 
 #
