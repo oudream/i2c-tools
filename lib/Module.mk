@@ -88,9 +88,11 @@ clean-lib:
 
 install-lib: $(addprefix $(LIB_DIR)/,$(LIB_TARGETS))
 	$(INSTALL_DIR) $(DESTDIR)$(libdir)
+ifeq ($(BUILD_DYNAMIC_LIB),1)
 	$(INSTALL_PROGRAM) $(LIB_DIR)/$(LIB_SHLIBNAME) $(DESTDIR)$(libdir)
 	$(LN) $(LIB_SHLIBNAME) $(DESTDIR)$(libdir)/$(LIB_SHSONAME)
 	$(LN) $(LIB_SHSONAME) $(DESTDIR)$(libdir)/$(LIB_SHBASENAME)
+endif
 ifeq ($(BUILD_STATIC_LIB),1)
 	$(INSTALL_DATA) $(LIB_DIR)/$(LIB_STLIBNAME) $(DESTDIR)$(libdir)
 endif
