@@ -42,7 +42,7 @@ enum parse_state {
 static void help(void)
 {
 	fprintf(stderr,
-		"Usage: i2ctransfer [-f] [-y] [-v] [-V] I2CBUS DESC [DATA] [DESC [DATA]]...\n"
+		"Usage: i2ctransfer [-f] [-y] [-v] [-V] [-a] I2CBUS DESC [DATA] [DESC [DATA]]...\n"
 		"  I2CBUS is an integer or an I2C bus name\n"
 		"  DESC describes the transfer in the form: {r|w}LENGTH[@address]\n"
 		"    1) read/write-flag 2) LENGTH (range 0-65535) 3) I2C address (use last one if omitted)\n"
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
 {
 	char filename[20];
 	int i2cbus, address = -1, file, arg_idx = 1, nmsgs = 0, nmsgs_sent, i;
-	int force = 0, yes = 0, version = 0, verbose = 0;
+	int force = 0, yes = 0, version = 0, verbose = 0, all_addrs = 0;
 	struct i2c_msg msgs[I2C_RDRW_IOCTL_MAX_MSGS];
 	enum parse_state state = PARSE_GET_DESC;
 	unsigned buf_idx = 0;
@@ -139,6 +139,7 @@ int main(int argc, char *argv[])
 		case 'v': verbose = 1; break;
 		case 'f': force = 1; break;
 		case 'y': yes = 1; break;
+		case 'a': all_addrs = 1; break;
 		default:
 			fprintf(stderr, "Error: Unsupported option \"%s\"!\n",
 				argv[arg_idx]);
@@ -210,7 +211,7 @@ int main(int argc, char *argv[])
 				 */
 
 				if (!force) {
-					address = parse_i2c_address(arg_ptr);
+					address = parse_i2c_address(arg_ptr, all_addrs);
 					if (address < 0)
 						goto err_out_with_arg;
 

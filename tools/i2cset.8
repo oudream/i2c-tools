@@ -8,6 +8,7 @@ i2cset \- set I2C registers
 .RB [ -y ]
 .RB [ "-m mask" ]
 .RB [ -r ]
+.RB [ -a ]
 .I i2cbus
 .I chip-address
 .I data-address
@@ -54,6 +55,9 @@ be the case, as neither I2C nor SMBus guarantees this.
 Read back the value right after writing it, and compare the result with the
 value written. This used to be the default behavior. The same limitations
 apply as those of option \fB-m\fR.
+.TP
+.B -a
+Allow using addresses between 0x00 - 0x02 and 0x78 - 0x7f. Not recommended.
 .PP
 There are three required options to i2cset. \fIi2cbus\fR indicates the number
 or name of the I2C bus to be scanned.  This number should correspond to one of

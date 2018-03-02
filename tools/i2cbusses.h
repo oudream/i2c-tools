@@ -35,7 +35,7 @@ struct i2c_adap *gather_i2c_busses(void);
 void free_adapters(struct i2c_adap *adapters);
 
 int lookup_i2c_bus(const char *i2cbus_arg);
-int parse_i2c_address(const char *address_arg);
+int parse_i2c_address(const char *address_arg, int all_addrs);
 int open_i2c_dev(int i2cbus, char *filename, size_t size, int quiet);
 int set_slave_addr(int file, int address, int force);
 

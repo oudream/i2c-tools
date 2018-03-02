@@ -7,6 +7,7 @@ i2ctransfer \- send user-defined I2C messages in one transfer
 .RB [ -f ]
 .RB [ -y ]
 .RB [ -v ]
+.RB [ -a ]
 .I i2cbus desc
 .RI [ data ]
 .RI [ desc
@@ -61,6 +62,9 @@ It will print infos about all messages sent, i.e. not only for read messages but
 .TP
 .B -V
 Display the version and exit.
+.TP
+.B -a
+Allow using addresses between 0x00 - 0x02 and 0x78 - 0x7f. Not recommended.
 
 .SH ARGUMENTS
 .PP

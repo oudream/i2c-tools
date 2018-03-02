@@ -38,9 +38,9 @@ static void help(void) __attribute__ ((noreturn));
 static void help(void)
 {
 	fprintf(stderr,
-		"Usage: i2cset [-f] [-y] [-m MASK] [-r] I2CBUS CHIP-ADDRESS DATA-ADDRESS [VALUE] ... [MODE]\n"
+		"Usage: i2cset [-f] [-y] [-m MASK] [-r] [-a] I2CBUS CHIP-ADDRESS DATA-ADDRESS [VALUE] ... [MODE]\n"
 		"  I2CBUS is an integer or an I2C bus name\n"
-		"  ADDRESS is an integer (0x03 - 0x77)\n"
+		"  ADDRESS is an integer (0x03 - 0x77, or 0x00 - 0x7f if -a is given)\n"
 		"  MODE is one of:\n"
 		"    c (byte, no value)\n"
 		"    b (byte data, default)\n"
@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
 	char filename[20];
 	int pec = 0;
 	int flags = 0;
-	int force = 0, yes = 0, version = 0, readback = 0;
+	int force = 0, yes = 0, version = 0, readback = 0, all_addrs = 0;
 	unsigned char block[I2C_SMBUS_BLOCK_MAX];
 	int len;
 
@@ -179,6 +179,7 @@ int main(int argc, char *argv[])
 			flags++;
 			break;
 		case 'r': readback = 1; break;
+		case 'a': all_addrs = 1; break;
 		default:
 			fprintf(stderr, "Error: Unsupported option "
 				"\"%s\"!\n", argv[1+flags]);
@@ -200,7 +201,7 @@ int main(int argc, char *argv[])
 	if (i2cbus < 0)
 		help();
 
-	address = parse_i2c_address(argv[flags+2]);
+	address = parse_i2c_address(argv[flags+2], all_addrs);
 	if (address < 0)
 		help();
 

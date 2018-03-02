@@ -377,19 +377,27 @@ int lookup_i2c_bus(const char *i2cbus_arg)
  * Parse a CHIP-ADDRESS command line argument and return the corresponding
  * chip address, or a negative value if the address is invalid.
  */
-int parse_i2c_address(const char *address_arg)
+int parse_i2c_address(const char *address_arg, int all_addrs)
 {
 	long address;
 	char *end;
+	long min_addr = 0x03;
+	long max_addr = 0x77;
 
 	address = strtol(address_arg, &end, 0);
 	if (*end || !*address_arg) {
 		fprintf(stderr, "Error: Chip address is not a number!\n");
 		return -1;
 	}
-	if (address < 0x03 || address > 0x77) {
+
+	if (all_addrs) {
+		min_addr = 0x00;
+		max_addr = 0x7f;
+	}
+
+	if (address < min_addr || address > max_addr) {
 		fprintf(stderr, "Error: Chip address out of range "
-			"(0x03-0x77)!\n");
+			"(0x%02lx-0x%02lx)!\n", min_addr, max_addr);
 		return -2;
 	}
 

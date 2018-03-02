@@ -6,6 +6,7 @@ i2cget \- read from I2C/SMBus chip registers
 .B i2cget
 .RB [ -f ]
 .RB [ -y ]
+.RB [ -a ]
 .I i2cbus
 .I chip-address
 .RI [ "data-address " [ mode ]]
@@ -34,6 +35,9 @@ Disable interactive mode. By default, i2cget will wait for a confirmation
 from the user before messing with the I2C bus. When this flag is used, it
 will perform the operation directly. This is mainly meant to be used in
 scripts. Use with caution.
+.TP
+.B -a
+Allow using addresses between 0x00 - 0x02 and 0x78 - 0x7f. Not recommended.
 .PP
 There are two required options to i2cget. \fIi2cbus\fR indicates the number
 or name of the I2C bus to be scanned.  This number should correspond to one of
