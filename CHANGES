@@ -3,6 +3,7 @@ i2c-tools CHANGES
 
 master
   tools: Fix potential buffer overflows in i2cbusses
+         Allow usage of reserved addresses with the '-a' flag
   decode-dimms: Add preliminary DDR4 support
                 Decode size and timings of DDR4
                 Decode misc parameters of DDR4
