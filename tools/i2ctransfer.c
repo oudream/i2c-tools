@@ -210,22 +210,13 @@ int main(int argc, char *argv[])
 				 * the address here.
 				 */
 
-				if (!force) {
-					address = parse_i2c_address(arg_ptr, all_addrs);
-					if (address < 0)
-						goto err_out_with_arg;
+				address = parse_i2c_address(arg_ptr, all_addrs);
+				if (address < 0)
+					goto err_out_with_arg;
 
-					/* Ensure address is not busy */
-					if (set_slave_addr(file, address, 0))
-						goto err_out_with_arg;
-				} else {
-					/* 'force' allows whole address range */
-					address = strtol(arg_ptr, &end, 0);
-					if (arg_ptr == end || *end || address > 0x7f) {
-						fprintf(stderr, "Error: Invalid chip address\n");
-						goto err_out_with_arg;
-					}
-				}
+				/* Ensure address is not busy */
+				if (!force && set_slave_addr(file, address, 0))
+					goto err_out_with_arg;
 			} else {
 				/* Reuse last address if possible */
 				if (address < 0) {
