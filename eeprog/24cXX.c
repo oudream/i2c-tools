@@ -87,7 +87,8 @@ int eeprom_open(char *dev_fqn, int addr, int type, struct eeprom* e)
 		return -1;
 
 	// get funcs list
-	if((r = ioctl(fd, I2C_FUNCS, &funcs) < 0))
+	r = ioctl(fd, I2C_FUNCS, &funcs);
+	if (r < 0)
 		return r;
 
 	
@@ -100,7 +101,8 @@ int eeprom_open(char *dev_fqn, int addr, int type, struct eeprom* e)
 	CHECK_I2C_FUNC( funcs, I2C_FUNC_SMBUS_WRITE_WORD_DATA );
 
 	// set working device
-	if( ( r = ioctl(fd, I2C_SLAVE, addr)) < 0)
+	r = ioctl(fd, I2C_SLAVE, addr);
+	if (r < 0)
 		return r;
 	e->fd = fd;
 	e->addr = addr;

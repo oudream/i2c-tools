@@ -10,6 +10,7 @@ master
                 Decode physical characteristics of DDR4
                 Documentation update for DDR4
                 Verify the CRC of DDR4 data block 1
+  eeprog: Fix ambiguous parentheses
 
 4.0 (2017-10-30)
   tools: Fix build with recent compilers (gcc 4.6+)
