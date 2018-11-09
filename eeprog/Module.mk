@@ -40,7 +40,7 @@ $(EEPROG_DIR)/24cXX.o: $(EEPROG_DIR)/24cXX.c $(EEPROG_DIR)/24cXX.h $(INCLUDE_DIR
 all-eeprog: $(addprefix $(EEPROG_DIR)/,$(EEPROG_TARGETS))
 
 strip-eeprog: $(addprefix $(EEPROG_DIR)/,$(EEPROG_TARGETS))
-	strip $(addprefix $(EEPROG_DIR)/,$(EEPROG_TARGETS))
+	$(STRIP) $(addprefix $(EEPROG_DIR)/,$(EEPROG_TARGETS))
 
 clean-eeprog:
 	$(RM) $(addprefix $(EEPROG_DIR)/,*.o $(EEPROG_TARGETS))

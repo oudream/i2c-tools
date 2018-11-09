@@ -71,7 +71,7 @@ $(TOOLS_DIR)/util.o: $(TOOLS_DIR)/util.c $(TOOLS_DIR)/util.h
 all-tools: $(addprefix $(TOOLS_DIR)/,$(TOOLS_TARGETS))
 
 strip-tools: $(addprefix $(TOOLS_DIR)/,$(TOOLS_TARGETS))
-	strip $(addprefix $(TOOLS_DIR)/,$(TOOLS_TARGETS))
+	$(STRIP) $(addprefix $(TOOLS_DIR)/,$(TOOLS_TARGETS))
 
 clean-tools:
 	$(RM) $(addprefix $(TOOLS_DIR)/,*.o $(TOOLS_TARGETS))

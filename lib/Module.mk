@@ -81,7 +81,7 @@ $(LIB_DIR)/smbus.ao: $(LIB_DIR)/smbus.c $(INCLUDE_DIR)/i2c/smbus.h
 all-lib: $(addprefix $(LIB_DIR)/,$(LIB_TARGETS) $(LIB_LINKS))
 
 strip-lib: $(addprefix $(LIB_DIR)/,$(LIB_TARGETS))
-	strip $(addprefix $(LIB_DIR)/,$(LIB_TARGETS))
+	$(STRIP) $(addprefix $(LIB_DIR)/,$(LIB_TARGETS))
 
 clean-lib:
 	$(RM) $(addprefix $(LIB_DIR)/,*.o *.ao $(LIB_TARGETS) $(LIB_LINKS))

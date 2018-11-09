@@ -25,6 +25,7 @@ RM		:= rm -f
 
 CC	?= gcc
 AR	?= ar
+STRIP	?= strip
 
 CFLAGS		?= -O2
 # When debugging, use the following instead
