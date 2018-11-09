@@ -62,9 +62,9 @@ There's no configure script, so simply run "make" to build the library and
 tools, and "make install" to install them. You also can use "make uninstall"
 to remove all the files you installed. By default, files are installed in
 /usr/local but you can change the location by editing the Makefile file and
-setting prefix to wherever you want. You may change the C compiler and the
-compilation flags as well, and also decide which flavors of the library
-will be built.
+setting PREFIX to wherever you want (or setting its value on the make
+command line). You may change the C compiler and the compilation flags as
+well, and also decide which flavors of the library will be built.
 
 In cases where you need to compile only the static or dynamic variant of
 the library, you can use BUILD_STATIC_LIB and BUILD_DYNAMIC_LIB at compile

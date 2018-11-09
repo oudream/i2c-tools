@@ -8,13 +8,13 @@
 # (at your option) any later version.
 
 DESTDIR	?=
-prefix	= /usr/local
-bindir	= $(prefix)/bin
-sbindir	= $(prefix)/sbin
-mandir	= $(prefix)/share/man
+PREFIX	?= /usr/local
+bindir	= $(PREFIX)/bin
+sbindir	= $(PREFIX)/sbin
+mandir	= $(PREFIX)/share/man
 man8dir	= $(mandir)/man8
-incdir	= $(prefix)/include
-libdir	= $(prefix)/lib
+incdir	= $(PREFIX)/include
+libdir	= $(PREFIX)/lib
 
 INSTALL		:= install
 INSTALL_DATA	:= $(INSTALL) -m 644
