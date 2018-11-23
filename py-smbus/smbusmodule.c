@@ -216,7 +216,7 @@ SMBus_read_byte(SMBus *self, PyObject *args)
 
 	SMBus_SET_ADDR(self, addr);
 
-	if ((result = i2c_smbus_read_byte(self->fd)) == -1) {
+	if ((result = i2c_smbus_read_byte(self->fd)) < 0) {
 		PyErr_SetFromErrno(PyExc_IOError);
 		return NULL;
 	}
@@ -239,7 +239,7 @@ SMBus_write_byte(SMBus *self, PyObject *args)
 
 	SMBus_SET_ADDR(self, addr);
 
-	if ((result = i2c_smbus_write_byte(self->fd, (__u8)val)) == -1) {
+	if ((result = i2c_smbus_write_byte(self->fd, (__u8)val)) < 0) {
 		PyErr_SetFromErrno(PyExc_IOError);
 		return NULL;
 	}
@@ -263,7 +263,7 @@ SMBus_read_byte_data(SMBus *self, PyObject *args)
 
 	SMBus_SET_ADDR(self, addr);
 
-	if ((result = i2c_smbus_read_byte_data(self->fd, (__u8)cmd)) == -1) {
+	if ((result = i2c_smbus_read_byte_data(self->fd, (__u8)cmd)) < 0) {
 		PyErr_SetFromErrno(PyExc_IOError);
 		return NULL;
 	}
@@ -287,7 +287,7 @@ SMBus_write_byte_data(SMBus *self, PyObject *args)
 	SMBus_SET_ADDR(self, addr);
 
 	if ((result = i2c_smbus_write_byte_data(self->fd,
-				(__u8)cmd, (__u8)val)) == -1) {
+				(__u8)cmd, (__u8)val)) < 0) {
 		PyErr_SetFromErrno(PyExc_IOError);
 		return NULL;
 	}
@@ -311,7 +311,7 @@ SMBus_read_word_data(SMBus *self, PyObject *args)
 
 	SMBus_SET_ADDR(self, addr);
 
-	if ((result = i2c_smbus_read_word_data(self->fd, (__u8)cmd)) == -1) {
+	if ((result = i2c_smbus_read_word_data(self->fd, (__u8)cmd)) < 0) {
 		PyErr_SetFromErrno(PyExc_IOError);
 		return NULL;
 	}
@@ -335,7 +335,7 @@ SMBus_write_word_data(SMBus *self, PyObject *args)
 	SMBus_SET_ADDR(self, addr);
 
 	if ((result = i2c_smbus_write_word_data(self->fd,
-				(__u8)cmd, (__u16)val)) == -1) {
+				(__u8)cmd, (__u16)val)) < 0) {
 		PyErr_SetFromErrno(PyExc_IOError);
 		return NULL;
 	}
@@ -360,7 +360,7 @@ SMBus_process_call(SMBus *self, PyObject *args)
 	SMBus_SET_ADDR(self, addr);
 
 	if ((result = i2c_smbus_process_call(self->fd,
-				(__u8)cmd, (__u16)val)) == -1) {
+				(__u8)cmd, (__u16)val)) < 0) {
 		PyErr_SetFromErrno(PyExc_IOError);
 		return NULL;
 	}
