@@ -10,6 +10,7 @@ master
                 Decode physical characteristics of DDR4
                 Documentation update for DDR4
                 Verify the CRC of DDR4 data block 1
+                Update manufacturer IDs (JEP106AX)
   eeprog: Fix ambiguous parentheses
   py-smbus: Fix i2c_smbus_* error propagation
 
