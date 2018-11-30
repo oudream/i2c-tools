@@ -2,7 +2,9 @@ i2c-tools CHANGES
 -----------------
 
 master
+  Makefile: Make STRIP, DESTDIR and PREFIX overridable
   tools: Fix potential buffer overflows in i2cbusses
+         Fix build race
          Allow usage of reserved addresses with the '-a' flag
   decode-dimms: Add preliminary DDR4 support
                 Decode size and timings of DDR4
@@ -12,6 +14,12 @@ master
                 Verify the CRC of DDR4 data block 1
                 Update manufacturer IDs (JEP106AX)
   eeprog: Fix ambiguous parentheses
+          Fix build race
+  i2ctransfer: Rename option '-f' to '-a' for consistency
+  i2c-dev.h: Delete
+  library: Fix build race
+           Allow disabling the dynamic flavor
+           Mention the correct license in source files
   py-smbus: Fix i2c_smbus_* error propagation
 
 4.0 (2017-10-30)
