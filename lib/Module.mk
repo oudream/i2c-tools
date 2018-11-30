@@ -18,7 +18,7 @@ LIB_CFLAGS	:= -Wstrict-prototypes -Wshadow -Wpointer-arith -Wcast-qual \
 # interface is changed in a backward incompatible way.  The interface is
 # defined by the public header files - in this case they are only smbus.h.
 LIB_MAINVER	:= 0
-LIB_MINORVER	:= 1.0
+LIB_MINORVER	:= 1.1
 LIB_VER		:= $(LIB_MAINVER).$(LIB_MINORVER)
 
 # The shared and static library names

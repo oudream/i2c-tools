@@ -1,7 +1,7 @@
 i2c-tools CHANGES
 -----------------
 
-master
+4.1 (2018-11-30)
   Makefile: Make STRIP, DESTDIR and PREFIX overridable
   tools: Fix potential buffer overflows in i2cbusses
          Fix build race
