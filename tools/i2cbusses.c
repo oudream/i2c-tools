@@ -375,14 +375,21 @@ int parse_i2c_address(const char *address_arg)
 
 int open_i2c_dev(int i2cbus, char *filename, size_t size, int quiet)
 {
-	int file;
+	int file, len;
 
-	snprintf(filename, size, "/dev/i2c/%d", i2cbus);
-	filename[size - 1] = '\0';
+	len = snprintf(filename, size, "/dev/i2c/%d", i2cbus);
+	if (len >= (int)size) {
+		fprintf(stderr, "%s: path truncated\n", filename);
+		return -EOVERFLOW;
+	}
 	file = open(filename, O_RDWR);
 
 	if (file < 0 && (errno == ENOENT || errno == ENOTDIR)) {
-		sprintf(filename, "/dev/i2c-%d", i2cbus);
+		len = snprintf(filename, size, "/dev/i2c-%d", i2cbus);
+		if (len >= (int)size) {
+			fprintf(stderr, "%s: path truncated\n", filename);
+			return -EOVERFLOW;
+		}
 		file = open(filename, O_RDWR);
 	}
 
