@@ -1551,7 +1551,7 @@ use constant DDR3_REGISTERED	=> 2;
 use constant DDR3_CLOCKED	=> 3;
 use constant DDR3_LOAD_REDUCED	=> 4;
 
-# Parameter: EEPROM bytes 0-127 (using 3-76)
+# Parameter: EEPROM bytes 0-127 (using 1-68)
 sub decode_ddr3_sdram($)
 {
 	my $bytes = shift;
@@ -1576,6 +1576,10 @@ sub decode_ddr3_sdram($)
 		{ type => "16b-SO-DIMM",	width => "67.6 mm",	family => DDR3_UNBUFFERED },
 		{ type => "32b-SO-DIMM",	width => "67.6 mm",	family => DDR3_UNBUFFERED },
 	);
+
+# SPD revision
+	printl_cond($bytes->[1] != 0xff, "SPD Revision",
+		    ($bytes->[1] >> 4) . "." . ($bytes->[1] & 0xf));
 
 	printl("Module Type", ($bytes->[3] <= $#module_types) ?
 					$module_types[$bytes->[3]]->{type} :

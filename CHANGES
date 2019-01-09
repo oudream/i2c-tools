@@ -1,6 +1,9 @@
 i2c-tools CHANGES
 -----------------
 
+master
+  decode-dimms: Print SPD revision for DDR3 too
+
 4.1 (2018-11-30)
   Makefile: Make STRIP, DESTDIR and PREFIX overridable
   tools: Fix potential buffer overflows in i2cbusses
