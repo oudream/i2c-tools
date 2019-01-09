@@ -3,6 +3,7 @@ i2c-tools CHANGES
 
 master
   decode-dimms: Print SPD revision for DDR3 too
+                Move SDR-specific code
 
 4.1 (2018-11-30)
   Makefile: Make STRIP, DESTDIR and PREFIX overridable

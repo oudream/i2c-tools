@@ -741,7 +741,7 @@ sub sdram_module_configuration_type($)
 	return join ", ", @edc;
 }
 
-# Parameter: EEPROM bytes 0-127 (using 3-62)
+# Parameter: EEPROM bytes 0-127 (using 3-62 and 126-127)
 sub decode_sdr_sdram($)
 {
 	my $bytes = shift;
@@ -1000,6 +1000,9 @@ sub decode_sdr_sdram($)
 	$temp = (($bytes->[35] & 0x7f) >> 4) + ($bytes->[35] & 0xf) * 0.1;
 	printl_cond(($bytes->[35] & 0xf) <= 9, "Data Signal Hold Time",
 		    (($bytes->[35] >> 7) ? -$temp : $temp) . " ns");
+
+# Last 2 bytes (126-127) are reserved, Intel used them as an extension
+	decode_intel_spec_freq($bytes);
 }
 
 sub as_ddr($$)
@@ -2692,13 +2695,6 @@ for $current (0 .. $#dimm) {
 		# Decode next 35 bytes (64-98, common to most
 		# memory types)
 		decode_manufacturing_information(\@bytes);
-	}
-
-# Next 27 bytes (99-125) are manufacturer specific, can't decode
-
-# Last 2 bytes (126-127) are reserved, Intel used them as an extension
-	if ($type eq "SDR SDRAM") {
-		decode_intel_spec_freq(\@bytes);
 	}
 }
 
