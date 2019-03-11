@@ -26,7 +26,7 @@ outputs a table with the list of detected devices on the specified bus.
 \fIi2cbus\fR indicates the number or name of the I2C bus to be scanned, and
 should correspond to one of the busses listed by \fIi2cdetect -l\fR.
 The optional parameters \fIfirst\fR and \fIlast\fR restrict the scanning
-range (default: from 0x03 to 0x77).
+range (default: from 0x08 to 0x77).
 .PP
 As there is no standard I2C detection command, i2cdetect uses arbitrary
 SMBus commands (namely SMBus quick write and SMBus receive byte) to probe

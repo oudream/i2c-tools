@@ -381,7 +381,7 @@ int parse_i2c_address(const char *address_arg, int all_addrs)
 {
 	long address;
 	char *end;
-	long min_addr = 0x03;
+	long min_addr = 0x08;
 	long max_addr = 0x77;
 
 	address = strtol(address_arg, &end, 0);

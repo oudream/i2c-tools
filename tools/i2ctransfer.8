@@ -64,7 +64,7 @@ It will print infos about all messages sent, i.e. not only for read messages but
 Display the version and exit.
 .TP
 .B -a
-Allow using addresses between 0x00 - 0x02 and 0x78 - 0x7f. Not recommended.
+Allow using addresses between 0x00 - 0x07 and 0x78 - 0x7f. Not recommended.
 
 .SH ARGUMENTS
 .PP
@@ -95,7 +95,7 @@ It is parsed as an unsigned 16 bit integer, but note that the Linux Kernel appli
 .B [@address]
 specifies the 7-bit address of the chip to be accessed for this message, and is an integer.
 If omitted, reuse the previous address.
-Normally, addresses outside the range of 0x03-0x77 and addresses with a kernel driver attached to them will be blocked.
+Normally, addresses outside the range of 0x08-0x77 and addresses with a kernel driver attached to them will be blocked.
 This can be overridden with
 .I -a
 (all) or

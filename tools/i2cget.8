@@ -37,12 +37,12 @@ will perform the operation directly. This is mainly meant to be used in
 scripts. Use with caution.
 .TP
 .B -a
-Allow using addresses between 0x00 - 0x02 and 0x78 - 0x7f. Not recommended.
+Allow using addresses between 0x00 - 0x07 and 0x78 - 0x7f. Not recommended.
 .PP
 There are two required options to i2cget. \fIi2cbus\fR indicates the number
 or name of the I2C bus to be scanned.  This number should correspond to one of
 the busses listed by \fIi2cdetect -l\fR. \fIchip-address\fR specifies the
-address of the chip on that bus, and is an integer between 0x03 and 0x77.
+address of the chip on that bus, and is an integer between 0x08 and 0x77.
 .PP
 \fIdata-address\fR specifies the address on that chip to read from, and is
 an integer between 0x00 and 0xFF. If omitted, the currently active register

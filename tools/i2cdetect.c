@@ -204,7 +204,7 @@ int main(int argc, char *argv[])
 	char filename[20];
 	unsigned long funcs;
 	int mode = MODE_AUTO;
-	int first = 0x03, last = 0x77;
+	int first = 0x08, last = 0x77;
 	int flags = 0;
 	int yes = 0, version = 0, list = 0;
 
