@@ -5,6 +5,7 @@ master
   tools: Consistently use snprintf instead of sprintf
   decode-dimms: Print SPD revision for DDR3 too
                 Move SDR-specific code
+  i2ctransfer: Mention '-a' everywhere in the manpage
 
 4.1 (2018-11-30)
   Makefile: Make STRIP, DESTDIR and PREFIX overridable

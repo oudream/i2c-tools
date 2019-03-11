@@ -96,10 +96,12 @@ It is parsed as an unsigned 16 bit integer, but note that the Linux Kernel appli
 specifies the 7-bit address of the chip to be accessed for this message, and is an integer.
 If omitted, reuse the previous address.
 Normally, addresses outside the range of 0x03-0x77 and addresses with a kernel driver attached to them will be blocked.
-With
+This can be overridden with
+.I -a
+(all) or
 .I -f
-(force), all addresses can be used.
-Be very careful when using that!
+(force).
+Be very careful when using these!
 10-bit addresses are currently not supported at all.
 
 .PP
