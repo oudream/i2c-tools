@@ -1636,7 +1636,8 @@ sub decode_ddr3_sdram($)
 
 	printl("SDRAM Device Width", (1 << (($bytes->[7] & 7) + 2))." bits");
 
-	printl("Bus Width Extension", ($bytes->[8] & 24)." bits");
+	printl("Primary Bus Width", (8 << ($bytes->[8] & 7))." bits");
+	printl_cond($bytes->[8] & 24, "Bus Width Extension", ($bytes->[8] & 24)." bits");
 
 	my $taa;
 	my $trcd;
@@ -1898,6 +1899,7 @@ sub decode_ddr4_sdram($)
 	printl("Ranks", $ranks);
 	printl_cond($ranks > 1, "Rank Mix",
 		    $bytes->[12] & 0x40 ? "Asymmetrical" : "Symmetrical");
+	printl("Primary Bus Width", (8 << ($bytes->[13] & 7))." bits");
 	printl_cond($bytes->[13] & 0x18, "Bus Width Extension", ($bytes->[13] & 0x18)." bits");
 
 	my $taa;
