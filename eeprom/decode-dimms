@@ -2532,7 +2532,7 @@ sub get_dimm_list
 				next unless -d "$dir/$file";
 
 				# Device name must be eeprom (driver eeprom)
-				# or spd (driver at24)
+				# spd (driver at24) or ee1004 (driver ee1004)
 				my $attr = sysfs_device_attribute("$dir/$file", "name");
 				next unless defined $attr &&
 					    ($attr eq "eeprom" ||
@@ -2548,7 +2548,7 @@ sub get_dimm_list
 	}
 
 	if (!$opened) {
-		print STDERR "No EEPROM found, try loading the eeprom or at24 module\n";
+		print STDERR "No EEPROM found, try loading the eeprom, at24 or ee1004 module\n";
 		exit;
 	}
 
