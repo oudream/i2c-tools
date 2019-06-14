@@ -1735,6 +1735,12 @@ sub decode_ddr3_sdram($)
 		($bytes->[32] & 128) ? "Yes" : "No");
 	printl("SDRAM Device Type", ddr3_device_type($bytes->[33]));
 
+	my @mac = ("Untested",
+		   "700 K", "600 K", "500 K", "400 K", "300 K", "200 K",
+		   undef, "Unlimited");
+	my $mac = $bytes->[41] & 0x0f;
+	printl_cond(defined $mac[$mac], "Maximum Activate Count (MAC)", $mac[$mac]);
+
 	# Following bytes are type-specific, so don't continue if type
 	# isn't known.
 	return if $bytes->[3] == 0 || $bytes->[3] > $#module_types;
