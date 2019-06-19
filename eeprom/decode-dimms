@@ -2003,7 +2003,7 @@ sub decode_ddr4_sdram($)
 		   "700 K", "600 K", "500 K", "400 K", "300 K", "200 K",
 		   undef, "Unlimited");
 	my $mac = $bytes->[7] & 0x0f;
-	printl_cond(defined $mac[$mac], "Maximum Activate Count", $mac[$mac]);
+	printl_cond(defined $mac[$mac], "Maximum Activate Count (MAC)", $mac[$mac]);
 
 	my $ppr = $bytes->[9] >> 6;
 	printl("Post Package Repair",
