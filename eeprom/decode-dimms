@@ -1554,6 +1554,24 @@ use constant DDR3_REGISTERED	=> 2;
 use constant DDR3_CLOCKED	=> 3;
 use constant DDR3_LOAD_REDUCED	=> 4;
 
+sub ddr3_adjust_ctime($$)
+{
+	my ($ctime, $ftb) = @_;
+	my $ii;
+
+	# Starting with DDR3-1866, vendors may start approximating the
+	# minimum cycle time. Try to guess what they really meant so
+	# that the reported speed matches the standard.
+	for ($ii = 7; $ii < 15; $ii++) {
+		if ($ctime > 7.5/$ii - $ftb/1000 && $ctime < 7.5/$ii + $ftb/1000) {
+			$ctime = 7.5/$ii;
+			last;
+		}
+	}
+
+	return $ctime;
+}
+
 # Parameter: EEPROM bytes 0-127 (using 1-68)
 sub decode_ddr3_sdram($)
 {
@@ -1600,15 +1618,7 @@ sub decode_ddr3_sdram($)
 	prints("Memory Characteristics");
 
 	$ctime = ddr3_mtb_ftb($bytes->[12], $bytes->[34], $mtb, $ftb);
-	# Starting with DDR3-1866, vendors may start approximating the
-	# minimum cycle time. Try to guess what they really meant so
-	# that the reported speed matches the standard.
-	for ($ii = 7; $ii < 15; $ii++) {
-		if ($ctime > 7.5/$ii - $ftb/1000 && $ctime < 7.5/$ii + $ftb/1000) {
-			$ctime = 7.5/$ii;
-			last;
-		}
-	}
+	$ctime = ddr3_adjust_ctime($ctime, $ftb);
 
 	my $ddrclk = 2 * (1000 / $ctime);
 	my $tbits = 1 << (($bytes->[8] & 7) + 3);
@@ -1874,7 +1884,9 @@ sub decode_ddr4_sdram($)
 	prints("Memory Characteristics");
 
 	$ctime = ddr4_mtb_ftb($bytes->[18], $bytes->[125], $mtb, $ftb);
+	$ctime = ddr3_adjust_ctime($ctime, $ftb);
 	$ctime_max = ddr4_mtb_ftb($bytes->[19], $bytes->[124], $mtb, $ftb);
+	$ctime_max = ddr3_adjust_ctime($ctime_max, $ftb);
 
 	my $ddrclk = 2 * (1000 / $ctime);
 	my $tbits = 8 << ($bytes->[13] & 7);
