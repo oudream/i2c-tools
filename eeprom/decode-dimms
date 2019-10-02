@@ -2719,7 +2719,8 @@ for $current (0 .. $#dimm) {
 	$decode_callback{$type}->(\@bytes)
 		if exists $decode_callback{$type};
 
-	if ($type eq "DDR3 SDRAM") {
+	if ($type eq "DDR3 SDRAM" ||
+	    $type eq "LPDDR3 SDRAM") {
 		# Decode DDR3-specific manufacturing data in bytes
 		# 117-149
 		if (@bytes >= 150) {
