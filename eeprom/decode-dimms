@@ -2537,17 +2537,22 @@ sub sysfs_device_attribute
 
 sub get_dimm_list
 {
-	my (@dirs, $dir, $opened, $file, @files);
+	my (@drivers, $driver, $dir, $opened, $file, @files);
 
 	if ($use_sysfs) {
-		@dirs = ('/sys/bus/i2c/drivers/eeprom',
-			 '/sys/bus/i2c/drivers/at24',
-			 '/sys/bus/i2c/drivers/ee1004');	# DDR4
+		@drivers = ('eeprom',
+			    'at24',
+			    'ee1004');	# DDR4
 	} else {
-		@dirs = ('/proc/sys/dev/sensors');
+		@drivers = ('eeprom');
+		$dir = '/proc/sys/dev/sensors';
 	}
 
-	foreach $dir (@dirs) {
+	foreach $driver (@drivers) {
+		if ($use_sysfs) {
+			$dir = "/sys/bus/i2c/drivers/$driver";
+		}
+
 		next unless opendir(local *DIR, $dir);
 		$opened++;
 		while (defined($file = readdir(DIR))) {
@@ -2567,7 +2572,8 @@ sub get_dimm_list
 				next unless $file =~ /^eeprom-/;
 			}
 			push @files, { eeprom => "$file",
-				       file => "$dir/$file" };
+				       file => "$dir/$file",
+				       driver => "$driver" };
 		}
 		close(DIR);
 	}
@@ -2584,6 +2590,7 @@ sub get_dimm_list
 # Each hash has the following keys:
 #  * eeprom: Name of the eeprom data file
 #  * file: Full path to the eeprom data file
+#  * driver: Driver used to retrieve the data (undef for dump files)
 #  * bytes: The EEPROM data (array)
 #  * is_rambus: Whether this is a RAMBUS DIMM or not (boolean)
 #  * chk_label: The label to display for the checksum or CRC
@@ -2650,6 +2657,7 @@ for $current (0 .. $#dimm) {
 				printl("Guessing DIMM is in", "bank $dimm_num");
 			}
 		}
+		printl("Kernel driver used", $dimm[$current]->{driver});
 	}
 
 # Decode first 3 bytes (0-2)
@@ -2724,6 +2732,8 @@ for $current (0 .. $#dimm) {
 		# 320-383
 		if (@bytes >= 384) {
 			decode_ddr4_mfg_data(\@bytes);
+		} elsif (!$use_hexdump && $dimm[$current]->{driver} ne "ee1004") {
+			print STDERR "HINT: You should be using the ee1004 driver instead of the $dimm[$current]->{driver} driver\n";
 		}
 	} else {
 		# Decode next 35 bytes (64-98, common to most
