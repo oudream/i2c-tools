@@ -22,9 +22,12 @@
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #    MA 02110-1301 USA.
 #
-#
-# The eeprom driver must be loaded (unless option -x is used). For kernels
-# older than 2.6.0, the eeprom driver can be found in the lm-sensors package.
+# A kernel driver must be loaded (unless option -x is used). Up to DDR3,
+# you need either the at24 driver (in the kernel tree since v2.6.27) or
+# the legacy eeprom driver (in the kernel tree since v2.6.0). For kernels
+# older than 2.6.0, the eeprom driver can be found in the lm-sensors 2
+# package. For DDR4, you need the ee1004 driver (in the kernel tree since
+# kernel v4.20).
 #
 # References:
 # PC SDRAM Serial Presence
