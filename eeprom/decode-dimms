@@ -43,14 +43,11 @@ use Fcntl qw(:DEFAULT :seek);
 use File::Basename;
 use vars qw($opt_html $opt_bodyonly $opt_side_by_side $opt_merge
 	    $opt_igncheck $use_sysfs $use_hexdump $sbs_col_width
-	    @vendors %decode_callback $revision @dimm $current %hexdump_cache);
+	    @vendors %decode_callback @dimm $current %hexdump_cache);
 
 use constant LITTLEENDIAN	=> "little-endian";
 use constant BIGENDIAN		=> "big-endian";
-
-$revision = '$Revision$ ($Date$)';
-$revision =~ s/\$\w+: (.*?) \$/$1/g;
-$revision =~ s/ \([^()]*\)//;
+use constant I2C_TOOLS_VER	=> "4.1";
 
 @vendors = (
 ["AMD", "AMI", "Fairchild", "Fujitsu",
@@ -2637,7 +2634,7 @@ if ($opt_html && !$opt_bodyonly) {
 	      "<body>\n";
 }
 
-printc("decode-dimms version $revision");
+printc("decode-dimms version ".I2C_TOOLS_VER);
 printh('Memory Serial Presence Detect Decoder',
 'By Philip Edelbrock, Christian Zuckschwerdt, Burkart Lingner,
 Jean Delvare, Trent Piepho and others');
