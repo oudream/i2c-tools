@@ -5,7 +5,7 @@
 # Copyright 1998, 1999 Philip Edelbrock <phil@netroedge.com>
 # modified by Christian Zuckschwerdt <zany@triq.net>
 # modified by Burkart Lingner <burkart@bollchen.de>
-# Copyright (C) 2005-2017  Jean Delvare <jdelvare@suse.de>
+# Copyright (C) 2005-2019  Jean Delvare <jdelvare@suse.de>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -2362,9 +2362,13 @@ sub spd_sizes($)
 sub readspd($$$)
 {
 	my ($offset, $size, $dimm_i) = @_;
-	my @bytes;
+	my (@bytes, $read);
 	if ($use_hexdump) {
 		@bytes = read_hexdump($dimm_i);
+		if (@bytes < $offset + $size) {
+			print STDERR "WARNING: Dump file $dimm_i is truncated\n";
+			$size = @bytes - $offset;
+		}
 		return @bytes[$offset..($offset + $size - 1)];
 	} elsif ($use_sysfs) {
 		# Kernel 2.6 with sysfs
@@ -2373,9 +2377,12 @@ sub readspd($$$)
 		binmode HANDLE;
 		sysseek(HANDLE, $offset, SEEK_SET)
 			or die "Cannot seek $dimm_i/eeprom";
-		sysread(HANDLE, my $eeprom, $size)
-			or die "Cannot read $dimm_i/eeprom";
+		$read = sysread(HANDLE, my $eeprom, $size)
+				or die "Cannot read $dimm_i/eeprom";
 		close HANDLE;
+		if ($read < $size) {
+			print STDERR "WARNING: $dimm_i/eeprom is smaller than expected\n";
+		}
 		@bytes = unpack("C*", $eeprom);
 	} else {
 		# Kernel 2.4 with procfs
@@ -2666,11 +2673,14 @@ for $current (0 .. $#dimm) {
 		printl("Total number of bytes in EEPROM", $spd_size);
 
 		# If there's more data than what we've read, let's
-		# read it now.  DDR3 will need this data.
+		# read it now.  DDR3 and DDR4 will need this data.
 		if ($spd_used > @bytes) {
 			push (@bytes,
 			      readspd(@bytes, $spd_used - @bytes,
 				      $dimm[$current]->{file}));
+			if (@bytes < $spd_used) {
+				print STDERR "WARNING: Fewer data bytes available (".(scalar @bytes).") than needed ($spd_used)\n";
+			}
 		}
 	}
 
@@ -2703,14 +2713,18 @@ for $current (0 .. $#dimm) {
 	if ($type eq "DDR3 SDRAM") {
 		# Decode DDR3-specific manufacturing data in bytes
 		# 117-149
-		decode_ddr3_mfg_data(\@bytes)
+		if (@bytes >= 150) {
+			decode_ddr3_mfg_data(\@bytes)
+		}
 	} elsif ($type eq "DDR4 SDRAM" ||
 		 $type eq "DDR4E SDRAM" ||
 		 $type eq "LPDDR4 SDRAM" ||
 		 $type eq "LPDDR4X SDRAM") {
 		# Decode DDR4-specific manufacturing data in bytes
 		# 320-383
-		decode_ddr4_mfg_data(\@bytes)
+		if (@bytes >= 384) {
+			decode_ddr4_mfg_data(\@bytes);
+		}
 	} else {
 		# Decode next 35 bytes (64-98, common to most
 		# memory types)
