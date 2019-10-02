@@ -2707,6 +2707,7 @@ for $current (0 .. $#dimm) {
 			"DDR4 SDRAM", "Reserved",	# 12, 13
 			"DDR4E SDRAM", "LPDDR3 SDRAM",	# 14, 15
 			"LPDDR4 SDRAM", "LPDDR4X SDRAM", # 16, 17
+			"DDR5 SDRAM", "LPDDR5 SDRAM",	# 18, 19
 		);
 		if ($bytes[2] < @type_list) {
 			$type = $type_list[$bytes[2]];
