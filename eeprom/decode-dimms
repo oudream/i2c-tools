@@ -1043,7 +1043,7 @@ sub decode_ddr_sdram($)
 	$pcclk += 100 if ($pcclk % 100) >= 50; # Round properly
 	$pcclk = $pcclk - ($pcclk % 100);
 	$ddrclk = int ($ddrclk);
-	printl("Maximum module speed", "$ddrclk MHz (PC${pcclk})");
+	printl("Maximum module speed", "$ddrclk MT/s (PC${pcclk})");
 
 #size computation
 	my $k = 0;
@@ -1296,7 +1296,7 @@ sub decode_ddr2_sdram($)
 	# Round down to comply with Jedec
 	$pcclk = $pcclk - ($pcclk % 100);
 	$ddrclk = int ($ddrclk);
-	printl("Maximum module speed", "$ddrclk MHz (PC2-${pcclk})");
+	printl("Maximum module speed", "$ddrclk MT/s (PC2-${pcclk})");
 
 #size computation
 	my $k = 0;
@@ -1626,7 +1626,7 @@ sub decode_ddr3_sdram($)
 	# Round down to comply with Jedec
 	$pcclk = $pcclk - ($pcclk % 100);
 	$ddrclk = int ($ddrclk);
-	printl("Maximum module speed", "$ddrclk MHz (PC3-${pcclk})");
+	printl("Maximum module speed", "$ddrclk MT/s (PC3-${pcclk})");
 
 # Size computation
 
@@ -1894,7 +1894,7 @@ sub decode_ddr4_sdram($)
 	# Round down to comply with Jedec
 	$pcclk = $pcclk - ($pcclk % 100);
 	$ddrclk = int ($ddrclk);
-	printl("Maximum module speed", "$ddrclk MHz (PC4-${pcclk})");
+	printl("Maximum module speed", "$ddrclk MT/s (PC4-${pcclk})");
 
 # Size computation
 	my $sdram_width = 4 << ($bytes->[12] & 0x07);
