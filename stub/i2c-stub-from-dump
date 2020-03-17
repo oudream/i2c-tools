@@ -127,10 +127,10 @@ sub process_dump
 	open(DUMP, $dump) || die "Can't open $dump: $!\n";
  OUTER_LOOP:
 	while (<DUMP>) {
-		if (m/^([0-9a-f]0) ?[:|](( [0-9a-fX]{2}){16})/i) {
+		if (m/^([0-9a-f]+0)[ :|]?((  ?[0-9a-fX]{2}){16})/i) {
 			# Byte dump
 			my $offset = hex($1);
-			my @values = split(/ /, $2);
+			my @values = split(/  ?/, $2);
 			shift(@values);
 			for (my $i = 0; $i < 16 && (my $val = shift(@values)); $i++) {
 				next if $val =~ m/X/;
