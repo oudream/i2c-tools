@@ -91,6 +91,7 @@ specifies if the message is read or write
 .B <length_of_message>
 specifies the number of bytes read or written in this message.
 It is parsed as an unsigned 16 bit integer, but note that the Linux Kernel applies an additional upper limit (8192 as of v4.10).
+For read messages to targets which support SMBus Block transactions, it can also be '?', then the target will determine the length.
 .TP
 .B [@address]
 specifies the 7-bit address of the chip to be accessed for this message, and is an integer.

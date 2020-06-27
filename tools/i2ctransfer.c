@@ -45,7 +45,8 @@ static void help(void)
 		"Usage: i2ctransfer [-f] [-y] [-v] [-V] [-a] I2CBUS DESC [DATA] [DESC [DATA]]...\n"
 		"  I2CBUS is an integer or an I2C bus name\n"
 		"  DESC describes the transfer in the form: {r|w}LENGTH[@address]\n"
-		"    1) read/write-flag 2) LENGTH (range 0-65535) 3) I2C address (use last one if omitted)\n"
+		"    1) read/write-flag 2) LENGTH (range 0-65535, or '?')\n"
+		"    3) I2C address (use last one if omitted)\n"
 		"  DATA are LENGTH bytes for a write message. They can be shortened by a suffix:\n"
 		"    = (keep value constant until LENGTH)\n"
 		"    + (increase value by 1 until LENGTH)\n"
@@ -84,17 +85,24 @@ static void print_msgs(struct i2c_msg *msgs, __u32 nmsgs, unsigned flags)
 
 	for (i = 0; i < nmsgs; i++) {
 		int read = msgs[i].flags & I2C_M_RD;
+		int recv_len = msgs[i].flags & I2C_M_RECV_LEN;
 		int print_buf = (read && (flags & PRINT_READ_BUF)) ||
 				(!read && (flags & PRINT_WRITE_BUF));
+		__u16 len = recv_len ? msgs[i].buf[0] + 1 : msgs[i].len;
 
-		if (flags & PRINT_HEADER)
-			fprintf(output, "msg %u: addr 0x%02x, %s, len %u",
-				i, msgs[i].addr, read ? "read" : "write", msgs[i].len);
+		if (flags & PRINT_HEADER) {
+			fprintf(output, "msg %u: addr 0x%02x, %s, len ",
+				i, msgs[i].addr, read ? "read" : "write");
+			if (!recv_len || flags & PRINT_READ_BUF)
+				fprintf(output, "%u", len);
+			else
+				fprintf(output, "TBD");
+		}
 
-		if (msgs[i].len && print_buf) {
+		if (len && print_buf) {
 			if (flags & PRINT_HEADER)
 				fprintf(output, ", buf ");
-			for (j = 0; j < msgs[i].len - 1; j++)
+			for (j = 0; j < len - 1; j++)
 				fprintf(output, "0x%02x ", msgs[i].buf[j]);
 			/* Print final byte with newline */
 			fprintf(output, "0x%02x\n", msgs[i].buf[j]);
@@ -192,13 +200,23 @@ int main(int argc, char *argv[])
 				goto err_out_with_arg;
 			}
 
-			len = strtoul(arg_ptr, &end, 0);
-			if (len > 0xffff || arg_ptr == end) {
-				fprintf(stderr, "Error: Length invalid\n");
-				goto err_out_with_arg;
+			if (*arg_ptr == '?') {
+				if (!(flags & I2C_M_RD)) {
+					fprintf(stderr, "Error: variable length not allowed with write\n");
+					goto err_out_with_arg;
+				}
+				len = 256; /* SMBUS3_MAX_BLOCK_LEN + 1 */
+				flags |= I2C_M_RECV_LEN;
+				arg_ptr++;
+			} else {
+				len = strtoul(arg_ptr, &end, 0);
+				if (len > 0xffff || arg_ptr == end) {
+					fprintf(stderr, "Error: Length invalid\n");
+					goto err_out_with_arg;
+				}
+				arg_ptr = end;
 			}
 
-			arg_ptr = end;
 			if (*arg_ptr) {
 				if (*arg_ptr++ != '@') {
 					fprintf(stderr, "Error: Unknown separator after length\n");
@@ -237,6 +255,8 @@ int main(int argc, char *argv[])
 				}
 				memset(buf, 0, len);
 				msgs[nmsgs].buf = buf;
+				if (flags & I2C_M_RECV_LEN)
+					buf[0] = 1; /* number of extra bytes */
 			}
 
 			if (flags & I2C_M_RD || len == 0) {
