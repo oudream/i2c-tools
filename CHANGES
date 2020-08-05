@@ -2,6 +2,7 @@ i2c-tools CHANGES
 -----------------
 
 master
+  Makefile: allow to preset all CFLAGS and LDFLAGS variables
   tools: Consistently use snprintf instead of sprintf
          Restrict addresses 0x03-0x07, too (defined by I2C standard)
   decode-dimms: Print SPD revision for DDR3 too
