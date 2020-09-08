@@ -125,11 +125,11 @@ static int confirm(const char *filename, int address, int size, int daddress,
 	}
 
 	fprintf(stderr, "I will write to device file %s, chip address "
-		"0x%02x, data address\n0x%02x, ", filename, address, daddress);
-	if (size == I2C_SMBUS_BYTE)
-		fprintf(stderr, "no data.\n");
-	else if (size == I2C_SMBUS_BLOCK_DATA ||
-		 size == I2C_SMBUS_I2C_BLOCK_DATA) {
+		"0x%02x,\n", filename, address);
+	if (size != I2C_SMBUS_BYTE)
+		fprintf(stderr, "data address 0x%02x, ", daddress);
+	if (size == I2C_SMBUS_BLOCK_DATA ||
+	    size == I2C_SMBUS_I2C_BLOCK_DATA) {
 		int i;
 
 		fprintf(stderr, "data");
@@ -140,7 +140,7 @@ static int confirm(const char *filename, int address, int size, int daddress,
 	} else
 		fprintf(stderr, "data 0x%02x%s, mode %s.\n", value,
 			vmask ? " (masked)" : "",
-			size == I2C_SMBUS_BYTE_DATA ? "byte" : "word");
+			size == I2C_SMBUS_WORD_DATA ? "word" : "byte");
 	if (pec)
 		fprintf(stderr, "PEC checking enabled.\n");
 
@@ -264,6 +264,10 @@ int main(int argc, char *argv[])
 
 	/* read values from command line */
 	switch (size) {
+	case I2C_SMBUS_BYTE:
+		/* short write: data address was not really data address */
+		value = daddress;
+		break;
 	case I2C_SMBUS_BYTE_DATA:
 	case I2C_SMBUS_WORD_DATA:
 		value = strtol(argv[flags+4], &end, 0);
@@ -344,12 +348,10 @@ int main(int argc, char *argv[])
 
 		if (!yes) {
 			fprintf(stderr, "Old value 0x%0*x, write mask "
-				"0x%0*x: Will write 0x%0*x to register "
-				"0x%02x\n",
+				"0x%0*x, will write 0x%0*x\n",
 				size == I2C_SMBUS_WORD_DATA ? 4 : 2, oldvalue,
 				size == I2C_SMBUS_WORD_DATA ? 4 : 2, vmask,
-				size == I2C_SMBUS_WORD_DATA ? 4 : 2, value,
-				daddress);
+				size == I2C_SMBUS_WORD_DATA ? 4 : 2, value);
 
 			fprintf(stderr, "Continue? [Y/n] ");
 			fflush(stderr);
@@ -369,7 +371,7 @@ int main(int argc, char *argv[])
 
 	switch (size) {
 	case I2C_SMBUS_BYTE:
-		res = i2c_smbus_write_byte(file, daddress);
+		res = i2c_smbus_write_byte(file, value);
 		break;
 	case I2C_SMBUS_WORD_DATA:
 		res = i2c_smbus_write_word_data(file, daddress, value);
@@ -407,7 +409,6 @@ int main(int argc, char *argv[])
 	switch (size) {
 	case I2C_SMBUS_BYTE:
 		res = i2c_smbus_read_byte(file);
-		value = daddress;
 		break;
 	case I2C_SMBUS_WORD_DATA:
 		res = i2c_smbus_read_word_data(file, daddress);
