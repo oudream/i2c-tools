@@ -5,6 +5,7 @@ i2c-tools CHANGES
   tools: Fix potential buffer overflows in i2cbusses
   eeprog: Increase delay after writes
   decode-dimms: Correctly check for out-of-bounds vendor ID
+  i2cset: Fix short writes with mask
   README: Mention the current maintainer
 
 3.1.2 (2015-06-17)
