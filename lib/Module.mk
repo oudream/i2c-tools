@@ -1,6 +1,6 @@
 # I2C library for Linux
 #
-# Copyright (C) 2012  Jean Delvare <jdelvare@suse.de>
+# Copyright (C) 2012-2020  Jean Delvare <jdelvare@suse.de>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published
@@ -87,7 +87,7 @@ clean-lib:
 	$(RM) $(addprefix $(LIB_DIR)/,*.o *.ao $(LIB_TARGETS) $(LIB_LINKS))
 
 install-lib: $(addprefix $(LIB_DIR)/,$(LIB_TARGETS))
-	$(INSTALL_DIR) $(DESTDIR)$(libdir)
+	$(INSTALL_DIR) $(DESTDIR)$(libdir) $(DESTDIR)$(man3dir)
 ifeq ($(BUILD_DYNAMIC_LIB),1)
 	$(INSTALL_PROGRAM) $(LIB_DIR)/$(LIB_SHLIBNAME) $(DESTDIR)$(libdir)
 	$(LN) $(LIB_SHLIBNAME) $(DESTDIR)$(libdir)/$(LIB_SHSONAME)
@@ -96,10 +96,12 @@ endif
 ifeq ($(BUILD_STATIC_LIB),1)
 	$(INSTALL_DATA) $(LIB_DIR)/$(LIB_STLIBNAME) $(DESTDIR)$(libdir)
 endif
+	$(INSTALL_DATA) $(LIB_DIR)/libi2c.3 $(DESTDIR)$(man3dir)
 
 uninstall-lib:
 	for library in $(LIB_TARGETS) $(LIB_LINKS) ; do \
 	$(RM) $(DESTDIR)$(libdir)/$$library ; done
+	$(RM) $(DESTDIR)$(man3dir)/libi2c.3
 
 all: all-lib
 

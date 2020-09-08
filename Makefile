@@ -12,6 +12,7 @@ PREFIX	?= /usr/local
 bindir	= $(PREFIX)/bin
 sbindir	= $(PREFIX)/sbin
 mandir	= $(PREFIX)/share/man
+man3dir	= $(mandir)/man3
 man8dir	= $(mandir)/man8
 incdir	= $(PREFIX)/include
 libdir	= $(PREFIX)/lib
