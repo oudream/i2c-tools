@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# Copyright (C) 2002-2008  Jean Delvare <jdelvare@suse.de>
+# Copyright (C) 2002-2020  Jean Delvare <jdelvare@suse.de>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 #
 # EEPROM data decoding for Sony Vaio laptops.
 #
-# The eeprom driver must be loaded. For kernels older than 2.6.0, the
+# The at24 or eeprom driver must be loaded. For kernels older than 2.6.0, the
 # eeprom driver can be found in the lm-sensors package.
 #
 # Please note that this is a guess-only work.  Sony support refused to help
@@ -53,10 +53,38 @@
 
 use strict;
 use Fcntl qw(:DEFAULT :seek);
+use File::Basename;
 use vars qw($sysfs $found);
 
-use constant VERSION	=> "1.6";
+use constant VERSION	=> "1.7";
 use constant ONLYROOT	=> "Readable only by root";
+
+# From a sysfs device path and an attribute name, return the attribute
+# value, or undef (stolen from sensors-detect)
+sub sysfs_device_attribute
+{
+	my ($device, $attr) = @_;
+	my $value;
+
+	open(local *FILE, "$device/$attr") or return "";
+	$value = <FILE>;
+	close(FILE);
+	return unless defined $value;
+
+	chomp($value);
+	return $value;
+}
+
+# From a sysfs device path, return the driver name, or undef (stolen from
+# sensors-detect)
+sub sysfs_device_driver
+{
+	my $device = shift;
+
+	my $link = readlink("$device/driver");
+	return unless defined $link;
+	return basename($link);
+}
 
 sub print_item
 {
@@ -213,6 +241,11 @@ for (my $i = 0, $found=0; $i <= 4 && !$found; $i++)
 {
 	if (-r "/sys/bus/i2c/devices/$i-0057/eeprom")
 	{
+		my $driver = sysfs_device_driver("/sys/bus/i2c/devices/$i-0057");
+		my $name = sysfs_device_attribute("/sys/bus/i2c/devices/$i-0057", "name");
+		next unless ($driver eq "at24" || $driver eq "eeprom");
+		next if ($driver eq "at24" && $name ne "24c02-vaio");
+
 		$sysfs = 1;
 		$found += vaio_decode($i, '57');
 	}
@@ -233,5 +266,5 @@ for (my $i = 0, $found=0; $i <= 4 && !$found; $i++)
 
 if (!$found)
 {
-	print("Vaio EEPROM not found.  Please make sure that the eeprom module is loaded.\n");
+	print("Vaio EEPROM not found.  Please make sure that the at24 or eeprom module is loaded.\n");
 }
