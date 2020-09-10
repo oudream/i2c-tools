@@ -237,7 +237,7 @@ END
 	print("\n");
 }
 
-for (my $i = 0, $found=0; $i <= 4 && !$found; $i++)
+for (my $i = 0, $found=0; $i <= 31 && !$found; $i++)
 {
 	if (-r "/sys/bus/i2c/devices/$i-0057/eeprom")
 	{
