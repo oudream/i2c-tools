@@ -20,7 +20,8 @@ category has its own sub-directory:
 
 * eeprom
   Perl scripts for decoding different types of EEPROMs (SPD, EDID...) These
-  scripts rely on the "eeprom" kernel driver. They are installed by default.
+  scripts rely on the eeprom kernel drivers ("at24" and "ee1004", "eeprom" on
+  older kernels). They are installed by default.
 
 * eeprog, eepromer
   Tools for writing to EEPROMs. These tools rely on the "i2c-dev" kernel
