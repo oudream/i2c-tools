@@ -1,7 +1,7 @@
 i2c-tools CHANGES
 -----------------
 
-master
+4.2 (2020-09-22)
   manpages: Add BUGS section to let people know how to contact us
   Makefile: Allow to preset all CFLAGS and LDFLAGS variables
   tools: Consistently use snprintf instead of sprintf

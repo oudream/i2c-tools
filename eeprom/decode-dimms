@@ -50,7 +50,7 @@ use vars qw($opt_html $opt_bodyonly $opt_side_by_side $opt_merge
 
 use constant LITTLEENDIAN	=> "little-endian";
 use constant BIGENDIAN		=> "big-endian";
-use constant I2C_TOOLS_VER	=> "4.1";
+use constant I2C_TOOLS_VER	=> "4.2";
 
 @vendors = (
 ["AMD", "AMI", "Fairchild", "Fujitsu",
