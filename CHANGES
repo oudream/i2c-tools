@@ -3,6 +3,7 @@ i2c-tools CHANGES
 
 master
   eeprom, eepromer: removed the tools in favor of eeprog
+  i2ctransfer: reverted check for returned length from driver
 
 4.2 (2020-09-22)
   manpages: Add BUGS section to let people know how to contact us

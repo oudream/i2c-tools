@@ -88,12 +88,7 @@ static void print_msgs(struct i2c_msg *msgs, __u32 nmsgs, unsigned flags)
 		int recv_len = msgs[i].flags & I2C_M_RECV_LEN;
 		int print_buf = (read && (flags & PRINT_READ_BUF)) ||
 				(!read && (flags & PRINT_WRITE_BUF));
-		__u16 len = msgs[i].len;
-
-		if (recv_len && print_buf && len != msgs[i].buf[0] + 1) {
-			fprintf(stderr, "Correcting wrong msg length after recv_len! Please fix the I2C driver and/or report.\n");
-			len = msgs[i].buf[0] + 1;
-		}
+		__u16 len = recv_len ? msgs[i].buf[0] + 1 : msgs[i].len;
 
 		if (flags & PRINT_HEADER) {
 			fprintf(output, "msg %u: addr 0x%02x, %s, len ",
