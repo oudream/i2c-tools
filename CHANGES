@@ -1,6 +1,9 @@
 i2c-tools CHANGES
 -----------------
 
+master
+  eeprom, eepromer: removed the tools in favor of eeprog
+
 4.2 (2020-09-22)
   manpages: Add BUGS section to let people know how to contact us
   Makefile: Allow to preset all CFLAGS and LDFLAGS variables

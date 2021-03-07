@@ -23,7 +23,7 @@ category has its own sub-directory:
   scripts rely on the eeprom kernel drivers ("at24" and "ee1004", "eeprom" on
   older kernels). They are installed by default.
 
-* eeprog, eepromer
+* eeprog
   Tools for writing to EEPROMs. These tools rely on the "i2c-dev" kernel
   driver. They are not installed by default.
 
