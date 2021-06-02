@@ -129,6 +129,14 @@ static struct i2c_adap *more_adapters(struct i2c_adap *adapters, int n)
 	return new_adapters;
 }
 
+static int sort_i2c_busses(const void *a, const void *b)
+{
+	const struct i2c_adap *adap1 = a;
+	const struct i2c_adap *adap2 = b;
+
+	return adap1->nr - adap2->nr;
+}
+
 struct i2c_adap *gather_i2c_busses(void)
 {
 	char s[120];
@@ -314,6 +322,9 @@ found:
 	closedir(dir);
 
 done:
+	/* Sort by bus number for convenience */
+	qsort(adapters, count, sizeof(struct i2c_adap), sort_i2c_busses);
+
 	return adapters;
 }
 
