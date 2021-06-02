@@ -2177,6 +2177,7 @@ sub decode_rambus($)
 	"DDR SDRAM"	=> \&decode_ddr_sdram,
 	"DDR2 SDRAM"	=> \&decode_ddr2_sdram,
 	"DDR3 SDRAM"	=> \&decode_ddr3_sdram,
+	"LPDDR3 SDRAM"	=> \&decode_ddr3_sdram,
 	"DDR4 SDRAM"	=> \&decode_ddr4_sdram,
 	"DDR4E SDRAM"	=> \&decode_ddr4_sdram,
 	"LPDDR4 SDRAM"	=> \&decode_ddr4_sdram,
