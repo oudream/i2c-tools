@@ -106,20 +106,15 @@ confirmation:
 # i2cdump -r 0x00-0x3f 1 0x2d
 .RE
 .fi
-.PP
-Dump the registers of the SMBus device at address 0x69 on bus 0 (i2c-0),
-using one SMBus block read transaction with error checking enabled, after
-user confirmation:
-.nf
-.RS
-# i2cdump 0 0x69 sp
-.RE
-.fi
 
 .SH BUGS
 To report bugs or send fixes, please write to the Linux I2C mailing list
 <linux-i2c@vger.kernel.org> with Cc to the current maintainer:
 Jean Delvare <jdelvare@suse.de>.
+
+SMBus block mode is deprecated and will be removed in a future version
+of this tool.
+Please use \fIi2cget\fR instead.
 
 .SH SEE ALSO
 i2cdetect(8), i2cget(8), i2cset(8), i2ctransfer(8), isadump(8)

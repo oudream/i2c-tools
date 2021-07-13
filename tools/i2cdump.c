@@ -43,7 +43,7 @@ static void help(void)
 		"    b (byte, default)\n"
 		"    w (word)\n"
 		"    W (word on even register addresses)\n"
-		"    s (SMBus block)\n"
+		"    s (SMBus block, deprecated)\n"
 		"    i (I2C block)\n"
 		"    c (consecutive byte)\n"
 		"    Append p for SMBus PEC\n");
@@ -181,6 +181,8 @@ int main(int argc, char *argv[])
 		even = 1;
 	} else if (!strncmp(argv[flags+3], "s", 1)) {
 		size = I2C_SMBUS_BLOCK_DATA;
+		fprintf(stderr,
+			"SMBus block mode is deprecated, please use i2cget instead\n");
 		pec = argv[flags+3][1] == 'p';
 	} else if (!strncmp(argv[flags+3], "c", 1)) {
 		size = I2C_SMBUS_BYTE;
