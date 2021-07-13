@@ -360,9 +360,6 @@ int main(int argc, char *argv[])
 				res = 256;
 			for (i = 0; i < res; i++)
 				block[i] = cblock[i];
-			if (size != I2C_SMBUS_BLOCK_DATA)
-				for (i = res; i < 256; i++)
-					block[i] = -1;
 		}
 
 		if (size == I2C_SMBUS_BYTE) {
