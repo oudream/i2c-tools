@@ -50,9 +50,9 @@ will be read (if that makes sense for the considered chip).
 .PP
 The \fImode\fR parameter, if specified, is one of the letters \fBb\fP,
 \fBw\fP, \fBc\fP, or \fBi\fP, corresponding to a read byte data, a read
-word data, a write byte/read byte, or an I2C block read transaction,
-respectively. A \fBp\fP can also be appended to the \fImode\fR parameter to
-enable PEC, except for I2C block transactions. If the \fImode\fR
+word data, a write byte/read byte, an SMBus block read, or an I2C block read
+transaction, respectively. A \fBp\fP can also be appended to the \fImode\fR
+parameter to enable PEC, except for I2C block transactions. If the \fImode\fR
 parameter is omitted,
 i2cget defaults to a read byte data transaction, unless \fIdata-address\fR is
 also omitted, in which case the default (and only valid) transaction is a

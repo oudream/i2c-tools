@@ -1,6 +1,6 @@
 /*
     i2cget.c - A user-space program to read an I2C register.
-    Copyright (C) 2005-2012  Jean Delvare <jdelvare@suse.de>
+    Copyright (C) 2005-2021  Jean Delvare <jdelvare@suse.de>
 
     Based on i2cset.c:
     Copyright (C) 2001-2003  Frodo Looijaard <frodol@dds.nl>, and
@@ -48,6 +48,7 @@ static void help(void)
 		"    b (read byte data, default)\n"
 		"    w (read word data)\n"
 		"    c (write byte/read byte)\n"
+		"    s (read SMBus block data)\n"
 		"    i (read I2C block data)\n"
 		"    Append p for SMBus PEC\n"
 		"  LENGTH is the I2C block data length (between 1 and %d, default %d)\n",
@@ -89,6 +90,13 @@ static int check_funcs(int file, int size, int daddress, int pec)
 	case I2C_SMBUS_WORD_DATA:
 		if (!(funcs & I2C_FUNC_SMBUS_READ_WORD_DATA)) {
 			fprintf(stderr, MISSING_FUNC_FMT, "SMBus read word");
+			return -1;
+		}
+		break;
+
+	case I2C_SMBUS_BLOCK_DATA:
+		if (!(funcs & I2C_FUNC_SMBUS_READ_BLOCK_DATA)) {
+			fprintf(stderr, MISSING_FUNC_FMT, "SMBus block read");
 			return -1;
 		}
 		break;
@@ -150,6 +158,7 @@ static int confirm(const char *filename, int address, int size, int daddress,
 			size == I2C_SMBUS_BYTE ? (daddress < 0 ?
 			"read byte" : "write byte/read byte") :
 			size == I2C_SMBUS_BYTE_DATA ? "read byte data" :
+			size == I2C_SMBUS_BLOCK_DATA ? "read SMBus block data" :
 			"read word data");
 	if (pec)
 		fprintf(stderr, "PEC checking enabled.\n");
@@ -225,6 +234,7 @@ int main(int argc, char *argv[])
 		case 'b': size = I2C_SMBUS_BYTE_DATA; break;
 		case 'w': size = I2C_SMBUS_WORD_DATA; break;
 		case 'c': size = I2C_SMBUS_BYTE; break;
+		case 's': size = I2C_SMBUS_BLOCK_DATA; break;
 		case 'i': size = I2C_SMBUS_I2C_BLOCK_DATA; break;
 		default:
 			fprintf(stderr, "Error: Invalid mode!\n");
@@ -279,6 +289,9 @@ int main(int argc, char *argv[])
 	case I2C_SMBUS_WORD_DATA:
 		res = i2c_smbus_read_word_data(file, daddress);
 		break;
+	case I2C_SMBUS_BLOCK_DATA:
+		res = i2c_smbus_read_block_data(file, daddress, block_data);
+		break;
 	case I2C_SMBUS_I2C_BLOCK_DATA:
 		res = i2c_smbus_read_i2c_block_data(file, daddress, length, block_data);
 		break;
@@ -292,7 +305,8 @@ int main(int argc, char *argv[])
 		exit(2);
 	}
 
-	if (size == I2C_SMBUS_I2C_BLOCK_DATA) {
+	if (size == I2C_SMBUS_BLOCK_DATA ||
+	    size == I2C_SMBUS_I2C_BLOCK_DATA) {
 		int i;
 
 		for (i = 0; i < res - 1; ++i)
