@@ -2,7 +2,7 @@
     i2cdump.c - a user-space program to dump I2C registers
     Copyright (C) 2002-2003  Frodo Looijaard <frodol@dds.nl>, and
                              Mark D. Studebaker <mdsxyz123@yahoo.com>
-    Copyright (C) 2004-2012  Jean Delvare <jdelvare@suse.de>
+    Copyright (C) 2004-2021  Jean Delvare <jdelvare@suse.de>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -251,6 +251,7 @@ int main(int argc, char *argv[])
 		switch (size) {
 		case I2C_SMBUS_BYTE:
 		case I2C_SMBUS_BYTE_DATA:
+		case I2C_SMBUS_I2C_BLOCK_DATA:
 			break;
 		case I2C_SMBUS_WORD_DATA:
 			if (!even || (!(first%2) && last%2))
@@ -341,8 +342,9 @@ int main(int argc, char *argv[])
 				/* Remember returned block length for a nicer
 				   display later */
 				s_length = res;
+				last = res - 1;
 			} else {
-				for (res = 0; res < 256; res += i) {
+				for (res = first; res <= last; res += i) {
 					i = i2c_smbus_read_i2c_block_data(file,
 						res, 32, cblock + res);
 					if (i <= 0) {
@@ -356,9 +358,7 @@ int main(int argc, char *argv[])
 					"return code %d\n", res);
 				exit(1);
 			}
-			if (res >= 256)
-				res = 256;
-			for (i = 0; i < res; i++)
+			for (i = first; i <= last; i++)
 				block[i] = cblock[i];
 		}
 
