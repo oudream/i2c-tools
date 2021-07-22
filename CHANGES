@@ -1,7 +1,7 @@
 i2c-tools CHANGES
 -----------------
 
-master
+4.3 (2021-07-22)
   decode-dimms: Attempt to decode LPDDR3 modules
   eeprom, eepromer: Removed the tools in favor of eeprog
   i2cdetect: Sort the bus list by number
