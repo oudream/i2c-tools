@@ -51,8 +51,8 @@ of the busses listed by \fIi2cdetect -l\fR. \fIaddress\fR indicates the
 address to be scanned on that bus, and is an integer between 0x08 and 0x77.
 .PP
 The \fImode\fR parameter, if specified, is one of the letters \fBb\fP, \fBw\fP,
-\fBs\fP, or \fBi\fP, corresponding to a read size of a single byte, a 16-bit
-word, an SMBus block, an I2C block, respectively. The \fBc\fP mode is a
+or \fBi\fP, corresponding to a read size of a single byte, a 16-bit
+word, an I2C block, respectively. The \fBc\fP mode is a
 little different, it reads all bytes consecutively, and is useful for chips that
 have an address auto-increment feature, such as EEPROMs. The \fBW\fP mode is
 also special, it is similar to \fBw\fP except that a read command will only
@@ -112,8 +112,7 @@ To report bugs or send fixes, please write to the Linux I2C mailing list
 <linux-i2c@vger.kernel.org> with Cc to the current maintainer:
 Jean Delvare <jdelvare@suse.de>.
 
-SMBus block mode is deprecated and will be removed in a future version
-of this tool.
+SMBus block mode used to be supported by this tool.
 Please use \fIi2cget\fR instead.
 
 .SH SEE ALSO
