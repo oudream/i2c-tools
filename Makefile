@@ -50,8 +50,6 @@ USE_STATIC_LIB := 1
 endif
 endif
 
-KERNELVERSION	:= $(shell uname -r)
-
 .PHONY: all strip clean install uninstall
 
 all:
