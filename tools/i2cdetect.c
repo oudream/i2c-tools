@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
 
 		tmp = strtol(argv[flags+2], &end, 0);
 		if (*end) {
-			fprintf(stderr, "Error: FIRST argment not a "
+			fprintf(stderr, "Error: FIRST argument not a "
 				"number!\n");
 			help();
 			exit(1);
@@ -293,7 +293,7 @@ int main(int argc, char *argv[])
 
 		tmp = strtol(argv[flags+3], &end, 0);
 		if (*end) {
-			fprintf(stderr, "Error: LAST argment not a "
+			fprintf(stderr, "Error: LAST argument not a "
 				"number!\n");
 			help();
 			exit(1);
