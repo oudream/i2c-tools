@@ -49,7 +49,7 @@ an integer between 0x00 and 0xFF. If omitted, the currently active register
 will be read (if that makes sense for the considered chip).
 .PP
 The \fImode\fR parameter, if specified, is one of the letters \fBb\fP,
-\fBw\fP, \fBc\fP, or \fBi\fP, corresponding to a read byte data, a read
+\fBw\fP, \fBc\fP, \fBs\fP, or \fBi\fP, corresponding to a read byte data, a read
 word data, a write byte/read byte, an SMBus block read, or an I2C block read
 transaction, respectively. A \fBp\fP can also be appended to the \fImode\fR
 parameter to enable PEC, except for I2C block transactions. If the \fImode\fR
